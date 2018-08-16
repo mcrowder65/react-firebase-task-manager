@@ -87,7 +87,7 @@
       "src/client/"
     ],
     "coverageReporters": [
-      "html"
+      "lcov"
     ]
   }
 }
