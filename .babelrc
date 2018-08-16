@@ -1,0 +1,24 @@
+
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "2"
+      }
+    }],
+    "react"
+    
+  ],
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-class-properties",
+    "transform-async-to-generator",
+    [
+      "transform-runtime",
+      {
+        "polyfill": false,
+        "regenerator": true
+      }
+    ]
+  ]
+}
