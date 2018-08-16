@@ -4,3 +4,4 @@ script:
 - npm test;
 - npm run webpack;
 - npm run bundlesize;
+- npm run coveralls;

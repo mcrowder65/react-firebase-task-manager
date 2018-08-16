@@ -4,20 +4,17 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "babel-runtime": "6.26.0",
     "babel-polyfill": "6.26.0",
+    "babel-runtime": "6.26.0",
+    "history": "4.7.2",
     "html-webpack-plugin": "3.2.0",
+    "node-sass": "4.9.0",
     "prop-types": "15.6.1",
     "react": "16.4.1",
     "react-dom": "16.4.1",
-    "react-redux": "5.0.7",
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
-    "redux": "4.0.0",
-    "redux-saga": "0.16.0",
-    "webpack": "3.12.0",
-    "node-sass": "4.9.0",
-    "history": "4.7.2"
+    "webpack": "3.12.0"
   },
   "devDependencies": {
     "babel-core": "6.26.3",
@@ -33,20 +30,22 @@
     "babel-preset-react": "6.24.1",
     "bundlesize": "0.17.0",
     "compression-webpack-plugin": "1.1.11",
+    "coveralls": "3.0.2",
     "css-loader": "0.28.11",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "eslint-config-mcrowder65": "0.0.29",
-    "jest": "23.1.0",
     "fetch-mock": "6.4.4",
-    "style-loader": "0.21.0",
-    "postcss-loader": "2.1.5",
-    "postcss-flexbugs-fixes": "3.3.1",
-    "sass-loader": "7.0.3",
-    "react-hot-loader": "4.3.3",
-    "webpack-dev-server": "2.11.2",
     "identity-obj-proxy": "3.0.0",
-    "webpack-bundle-analyzer": "2.13.1"
+    "jest": "23.1.0",
+    "postcss-flexbugs-fixes": "3.3.1",
+    "postcss-loader": "2.1.5",
+    "prettier": "^1.14.2",
+    "react-hot-loader": "4.3.3",
+    "sass-loader": "7.0.3",
+    "style-loader": "0.21.0",
+    "webpack-bundle-analyzer": "2.13.1",
+    "webpack-dev-server": "2.11.2"
   },
   "eslintConfig": {
     "extends": [
@@ -67,12 +66,13 @@
     "linter": "./node_modules/.bin/eslint src --ext .js,.jsx && ./node_modules/.bin/eslint test --ext .js,.jsx",
     "webpack": "export NODE_ENV=production && ./node_modules/.bin/webpack -p --progress",
     "bundlesize": "bundlesize",
-    "analyze-bundle": "export ANALYZE_BUNDLE=true && npm run webpack"
+    "analyze-bundle": "export ANALYZE_BUNDLE=true && npm run webpack",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/test/client/config.js",
+    "setupTestFrameworkScriptFile": "<rootDir>/test/config.js",
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/file-mock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/file-mock.js",
       "\\.(css|scss|less)$": "identity-obj-proxy"
     },
     "collectCoverageFrom": [
