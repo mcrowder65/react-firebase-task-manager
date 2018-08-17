@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@firebase/app": "0.3.3",
+    "@firebase/auth": "0.7.2",
     "@material-ui/core": "1.5.0",
     "@material-ui/icons": "2.0.2",
     "babel-polyfill": "6.26.0",
@@ -42,7 +44,7 @@
     "coveralls": "3.0.2",
     "css-loader": "0.28.11",
     "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
+    "enzyme-adapter-react-16": "1.2.0",
     "eslint-config-mcrowder65": "0.0.29",
     "fetch-mock": "6.4.4",
     "identity-obj-proxy": "3.0.0",
@@ -65,7 +67,7 @@
     {
       "path": "./build/*.bundle.js",
       "compression": "gzip",
-      "maxSize": "125 kB"
+      "maxSize": "150 kB"
     }
   ],
   "scripts": {
