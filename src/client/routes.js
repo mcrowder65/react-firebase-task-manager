@@ -4,12 +4,11 @@ import Loadable from "react-loadable";
 function Loading() {
   return <div>Loading...</div>;
 }
-export const Login = Loadable({
-  loader: () => import("./components/login"),
-  loading: Loading
-});
-
-export const Home = Loadable({
-  loader: () => import("./components/home"),
-  loading: Loading
-});
+export const withLoadable = loader =>
+  Loadable({
+    loader,
+    loading: Loading
+  });
+export const Login = withLoadable(() => import("./components/login"));
+export const Home = withLoadable(() => import("./components/home"));
+export const Signup = withLoadable(() => import("./components/signup"));
