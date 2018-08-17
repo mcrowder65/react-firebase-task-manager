@@ -7,18 +7,39 @@
       }
     }],
     "react"
-    
+
   ],
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",
     "transform-async-to-generator",
+    "syntax-dynamic-import",
     [
       "transform-runtime",
       {
         "polyfill": false,
         "regenerator": true
       }
+    ],
+    [
+      "import",
+      [
+        {
+          "libraryName": "@material-ui/core",
+          "libraryDirectory": "",
+          "camel2DashComponentName": false
+        },
+        {
+          "libraryName": "lodash",
+          "libraryDirectory": "",
+          "camel2DashComponentName": false
+        },
+        {
+          "libraryName": "lodash/fp",
+          "libraryDirectory": "",
+          "camel2DashComponentName": false
+        }
+      ]
     ]
   ]
 }

@@ -2,22 +2,26 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
 const CompressionPlugin = require("compression-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 const isProd = process.env.NODE_ENV === "production";
 const sourcePath = path.join(__dirname, "./src/client");
 const webpackConfig = {
   cache: !isProd,
   devtool: isProd ? "" : "eval-cheap-module-source-map",
-  entry: isProd ? "./src/client/app.js" : [
-    "react-hot-loader/patch",
-    "webpack-dev-server/client?http://localhost:8080",
-    "webpack/hot/only-dev-server",
-    "./src/client/app.js"
-  ],
+  entry: isProd
+    ? "./src/client/app.js"
+    : [
+        "react-hot-loader/patch",
+        "webpack-dev-server/client?http://localhost:8080",
+        "webpack/hot/only-dev-server",
+        "./src/client/app.js"
+      ],
   output: {
     path: `${__dirname}/build`,
-    filename: "bundle.js"
+    filename: "[name].bundle.js",
+    chunkFilename: "[name].bundle.js"
   },
   resolve: {
     extensions: [".js", ".scss", ".jsx", ".css"],
@@ -31,12 +35,14 @@ const webpackConfig = {
         include: path.resolve(__dirname, "src"),
         loader: "babel-loader",
         exclude: /node_modules/
-      }, {
+      },
+      {
         test: /\.jsx$/,
         include: path.resolve(__dirname, "src"),
         loader: "babel-loader",
         exclude: /node_modules/
-      }, {
+      },
+      {
         test: /\.css$/,
         include: path.resolve(__dirname, "src"),
         // loader: 'style-loader!css-loader',
@@ -70,7 +76,8 @@ const webpackConfig = {
           }
         ],
         exclude: /node_modules/
-      }, {
+      },
+      {
         test: /\.scss$/,
         include: path.resolve(__dirname, "src"),
         use: [
@@ -108,14 +115,14 @@ const webpackConfig = {
           }
         ],
         exclude: /node_modules/
-      }, {
+      },
+      {
         test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
         include: path.resolve(__dirname, "src"),
         loader: "url-loader?limit=30000&name=[name]-[hash].[ext]",
         exclude: /node_modules/
       }
     ]
-
   },
   devServer: {
     historyApiFallback: !isProd,
@@ -123,8 +130,7 @@ const webpackConfig = {
     compress: isProd,
     contentBase: "./",
     publicPath: "/"
-  },
-
+  }
 };
 webpackConfig.plugins = [
   new HtmlWebpackPlugin({
@@ -141,34 +147,32 @@ webpackConfig.plugins = [
       keepClosingSlash: true,
       minifyJS: true,
       minifyCSS: true,
-      minifyURLs: true,
-    },
+      minifyURLs: true
+    }
   }),
   new webpack.EnvironmentPlugin(["NODE_ENV"]),
 
   new webpack.DefinePlugin({
-    "process.env.NODE_ENV": "\"production\""
-  }),
-
+    "process.env.NODE_ENV": '"production"'
+  })
 ];
 if (process.env.ANALYZE_BUNDLE) {
   webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 if (isProd) {
-
   webpackConfig.plugins.push(
     new webpack.NoEmitOnErrorsPlugin(),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
       minRatio: 0.8
     })
   );
 } else if (!isProd) {
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin());
+    new webpack.NamedModulesPlugin()
+  );
 }
 module.exports = webpackConfig;
