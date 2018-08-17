@@ -9,8 +9,8 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "lodash/fp";
-import firebase from "firebase";
-import "firebase/auth";
+import firebase from "@firebase/app";
+import "@firebase/auth";
 
 import { withStateProps } from "./state-utils";
 import LoaderCard from "./reusable/loader-card";
