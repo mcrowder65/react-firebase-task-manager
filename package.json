@@ -65,7 +65,7 @@
     {
       "path": "./build/*.bundle.js",
       "compression": "gzip",
-      "maxSize": "123 kB"
+      "maxSize": "125 kB"
     }
   ],
   "scripts": {
