@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "babel-polyfill";
 import { withStyles } from "@material-ui/core/styles";
-import firebase from "firebase";
-import "firebase/auth";
+import firebase from "firebase/app";
 
 import Router from "./router";
 import { StateProvider } from "./components/state-utils";
