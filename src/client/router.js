@@ -57,7 +57,7 @@ class Router extends React.Component {
               </Toolbar>
             </AppBar>
             <div className={classes.content}>
-              <Route exact path="/" component={Home} />
+              <Route exact path={routes.HOME} component={Home} />
               <Route path={routes.LOGIN} component={Login} />
               <Route path={routes.SIGNUP} component={Signup} />
             </div>

@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Card,
   FormControl,
   Input,
   InputLabel,
@@ -10,6 +9,13 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "lodash/fp";
+import firebase from "firebase";
+import "firebase/auth";
+
+import { withStateProps } from "./state-utils";
+import LoaderCard from "./reusable/loader-card";
+import { browserHistory } from "../browser-history";
+import { routes } from "../constants";
 
 const styles = {
   content: {
@@ -24,18 +30,53 @@ const styles = {
 };
 class Login extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    startFetching: PropTypes.func.isRequired,
+    stopFetching: PropTypes.func.isRequired
+  };
+  state = {
+    email: "",
+    password: ""
+  };
+
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  onSubmit = async e => {
+    if (this.state.email && this.state.password) {
+      e.preventDefault();
+    }
+    try {
+      this.props.startFetching();
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password);
+      browserHistory.push(routes.HOME);
+    } catch (error) {
+      // TODO move to modal
+      // eslint-disable-next-line no-alert
+      alert(error.message);
+    } finally {
+      this.props.stopFetching();
+    }
   };
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.content}>
-        <Card className={classes.card}>
+        <LoaderCard className={classes.card}>
           <Typography variant="headline">Sign up</Typography>
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus />
+              <Input
+                id="email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                value={this.state.email}
+                onChange={this.onChange}
+              />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="password">Password</InputLabel>
@@ -44,17 +85,8 @@ class Login extends React.Component {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="confirm-password">
-                Confirm Password
-              </InputLabel>
-              <Input
-                name="confirm-password"
-                type="password"
-                id="confirm-password"
-                autoComplete="current-password"
+                value={this.state.password}
+                onChange={this.onChange}
               />
             </FormControl>
             <Button
@@ -63,16 +95,20 @@ class Login extends React.Component {
               variant="raised"
               color="primary"
               className={classes.submit}
+              onClick={this.onSubmit}
             >
               Sign in
             </Button>
           </form>
-        </Card>
+        </LoaderCard>
       </div>
     );
   }
 }
 
-const enhance = compose(withStyles(styles));
+const enhance = compose(
+  withStateProps,
+  withStyles(styles)
+);
 
 export default enhance(Login);

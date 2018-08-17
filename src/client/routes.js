@@ -4,7 +4,7 @@ import Loadable from "react-loadable";
 function Loading() {
   return <div>Loading...</div>;
 }
-export const withLoadable = loader =>
+const withLoadable = loader =>
   Loadable({
     loader,
     loading: Loading
