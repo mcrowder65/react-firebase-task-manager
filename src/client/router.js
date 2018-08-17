@@ -8,7 +8,7 @@ import { compose } from "lodash/fp";
 
 import { routes } from "./constants";
 import { browserHistory } from "./browser-history";
-import { Login, Home } from "./routes";
+import { Login, Home, Signup } from "./routes";
 
 const styles = {
   root: {
@@ -29,31 +29,41 @@ class Router extends React.Component {
   routeToLogin = () => {
     browserHistory.push(routes.LOGIN);
   };
+
+  routeToSignup = () => {
+    browserHistory.push(routes.SIGNUP);
+  };
   render() {
     const { classes } = this.props;
     return (
-      <BrowserRouter history={browserHistory}>
-        <React.Fragment>
-          <AppBar>
-            <Toolbar>
-              <Typography
-                variant="title"
-                color="inherit"
-                className={classes.flex}
-              >
-                Task Manager
-              </Typography>
-              <Button color="inherit" onClick={this.routeToLogin}>
-                LOGIN
-              </Button>
-            </Toolbar>
-          </AppBar>
-          <div className={classes.content}>
-            <Route exact path="/" component={Home} />
-            <Route path={routes.LOGIN} component={Login} />
-          </div>
-        </React.Fragment>
-      </BrowserRouter>
+      <div className={classes.body}>
+        <BrowserRouter history={browserHistory}>
+          <React.Fragment>
+            <AppBar>
+              <Toolbar>
+                <Typography
+                  variant="title"
+                  color="inherit"
+                  className={classes.flex}
+                >
+                  Task Manager
+                </Typography>
+                <Button color="inherit" onClick={this.routeToLogin}>
+                  LOGIN
+                </Button>
+                <Button color="inherit" onClick={this.routeToSignup}>
+                  SIGNUP
+                </Button>
+              </Toolbar>
+            </AppBar>
+            <div className={classes.content}>
+              <Route exact path="/" component={Home} />
+              <Route path={routes.LOGIN} component={Login} />
+              <Route path={routes.SIGNUP} component={Signup} />
+            </div>
+          </React.Fragment>
+        </BrowserRouter>
+      </div>
     );
   }
 }
