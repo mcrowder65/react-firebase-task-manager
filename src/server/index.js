@@ -31,8 +31,8 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../../build", "index.html"));
 });
 
-// eslint-disable-next-line no-console
 const server = app.listen(3000, () =>
+  // eslint-disable-next-line no-console
   console.log(`server started on port 3000`)
 );
 export default server;

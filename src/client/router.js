@@ -7,9 +7,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { compose } from "lodash/fp";
 
 import { routes } from "./constants";
-import Home from "./components/home";
-import Login from "./components/login";
 import { browserHistory } from "./browser-history";
+import { Login, Home } from "./routes";
 
 const styles = {
   root: {
