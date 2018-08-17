@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "babel-polyfill";
 import { withStyles } from "@material-ui/core/styles";
 import firebase from "@firebase/app";
 
@@ -26,6 +25,7 @@ firebase.initializeApp({
   storageBucket: "task-manager-82de4.appspot.com",
   messagingSenderId: "869805583292"
 });
+
 const Wrapper = withStyles(styles)(props => props.children);
 const App = () => (
   <StateProvider>

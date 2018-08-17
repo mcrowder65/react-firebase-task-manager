@@ -30,6 +30,11 @@
           "camel2DashComponentName": false
         },
         {
+          "libraryName": "@material-ui/icons",
+          "libraryDirectory": "",
+          "camel2DashComponentName": false
+        },
+        {
           "libraryName": "lodash",
           "libraryDirectory": "",
           "camel2DashComponentName": false

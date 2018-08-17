@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { getUser } from "../utils/firebase-utils";
+
 const { Provider, Consumer } = React.createContext();
 
 class StateProvider extends React.Component {
@@ -9,7 +11,8 @@ class StateProvider extends React.Component {
   };
 
   state = {
-    fetchCount: 0
+    fetchCount: 0,
+    currentUser: {}
   };
 
   startFetching = () => {
@@ -30,14 +33,18 @@ class StateProvider extends React.Component {
   isFetching = () => {
     return this.state.fetchCount > 0;
   };
-
+  async componentDidMount() {
+    const currentUser = await getUser();
+    this.setState({ currentUser: currentUser || {} });
+  }
   render() {
     return (
       <Provider
         value={{
           isFetching: this.isFetching(),
           startFetching: this.startFetching,
-          stopFetching: this.stopFetching
+          stopFetching: this.stopFetching,
+          currentUser: this.state.currentUser
         }}
       >
         {this.props.children}
