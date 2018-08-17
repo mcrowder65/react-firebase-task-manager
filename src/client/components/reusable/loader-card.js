@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Card, LinearProgress } from "@material-ui/core";
-import { compose } from "lodash/fp";
 
+import { compose } from "../../utils";
 import { withStateProps } from "../state-utils";
 
 class LoaderCard extends React.Component {
@@ -16,6 +16,7 @@ class LoaderCard extends React.Component {
       isFetching,
       stopFetching,
       startFetching,
+      currentUser,
       ...otherProps
     } = this.props;
     return (

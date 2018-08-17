@@ -8,14 +8,13 @@ import {
   Typography
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { compose } from "lodash/fp";
-import firebase from "@firebase/app";
-import "@firebase/auth";
 
+import { compose } from "../utils";
 import LoaderCard from "./reusable/loader-card";
 import { withStateProps } from "./state-utils";
 import { browserHistory } from "../browser-history";
 import { routes } from "../constants";
+import { login } from "../utils/firebase-utils";
 
 const styles = {
   content: {
@@ -43,19 +42,13 @@ class Login extends React.Component {
   };
   login = async e => {
     const { email, password } = this.state;
-    if (email && password) {
+    if (email && password && e.preventDefault) {
       e.preventDefault();
     }
     try {
       this.props.startFetching();
-      await firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-
-      const currentUser = await firebase.auth().currentUser;
-      console.log(currentUser);
-      // browserHistory.push(routes.HOME);
+      await login(email, password);
+      browserHistory.push(routes.HOME);
     } catch (error) {
       // TODO move to modal
       // eslint-disable-next-line no-alert
