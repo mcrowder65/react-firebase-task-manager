@@ -5,6 +5,8 @@ import { Route } from "react-router";
 import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "lodash/fp";
+import firebase from "@firebase/app";
+import "@firebase/auth";
 
 import { routes } from "./constants";
 import { browserHistory } from "./browser-history";
@@ -33,8 +35,17 @@ class Router extends React.Component {
   routeToSignup = () => {
     browserHistory.push(routes.SIGNUP);
   };
+
+  routeToHome = () => {
+    browserHistory.push(routes.HOME);
+  };
+  getButtons = async () => {
+    const currentUser = await firebase.auth().currentUser;
+    console.log(currentUser);
+  };
   render() {
     const { classes } = this.props;
+    this.getButtons();
     return (
       <div className={classes.body}>
         <BrowserRouter history={browserHistory}>
@@ -42,6 +53,7 @@ class Router extends React.Component {
             <AppBar>
               <Toolbar>
                 <Typography
+                  onClick={this.routeToHome}
                   variant="title"
                   color="inherit"
                   className={classes.flex}

@@ -60,7 +60,12 @@ class Login extends React.Component {
       this.props.stopFetching();
     }
   };
+  getButtons = async () => {
+    const currentUser = await firebase.auth().currentUser;
+    console.log(currentUser);
+  };
   render() {
+    this.getButtons();
     const { classes } = this.props;
     return (
       <div className={classes.content}>

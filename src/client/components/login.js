@@ -48,8 +48,14 @@ class Login extends React.Component {
     }
     try {
       this.props.startFetching();
+      await firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      browserHistory.push(routes.HOME);
+
+      const currentUser = await firebase.auth().currentUser;
+      console.log(currentUser);
+      // browserHistory.push(routes.HOME);
     } catch (error) {
       // TODO move to modal
       // eslint-disable-next-line no-alert
