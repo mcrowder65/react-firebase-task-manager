@@ -59,7 +59,10 @@
   "eslintConfig": {
     "extends": [
       "mcrowder65"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }]
+    }
   },
   "bundlesize": [
     {
@@ -71,6 +74,7 @@
   "scripts": {
     "start": "export NODE_ENV=development && ./node_modules/.bin/webpack-dev-server",
     "pr-check": "npm test && npm run webpack && npm run bundlesize",
+    "pr-verify": "npm test && npm run webpack && npm run bundlesize",
     "test": "npm run linter && npm run jest",
     "jest": "./node_modules/.bin/jest --coverage",
     "linter": "./node_modules/.bin/eslint src --ext .js,.jsx && ./node_modules/.bin/eslint test --ext .js,.jsx",
