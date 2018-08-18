@@ -7,7 +7,13 @@ import { withStateProps } from "../state-utils";
 
 class LoaderCard extends React.Component {
   static propTypes = {
-    isFetching: PropTypes.bool.isRequired
+    isFetching: PropTypes.bool.isRequired,
+    children: PropTypes.element.isRequired,
+    classes: PropTypes.any.isRequired,
+    stopFetching: PropTypes.any.isRequired,
+    startFetching: PropTypes.any.isRequired,
+    currentUser: PropTypes.any.isRequired,
+    refreshCurrentUser: PropTypes.any.isRequired
   };
 
   render() {
@@ -17,6 +23,7 @@ class LoaderCard extends React.Component {
       stopFetching,
       startFetching,
       currentUser,
+      refreshCurrentUser,
       ...otherProps
     } = this.props;
     return (

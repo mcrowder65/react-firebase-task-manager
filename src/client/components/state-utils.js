@@ -12,7 +12,7 @@ class StateProvider extends React.Component {
 
   state = {
     fetchCount: 0,
-    currentUser: {}
+    currentUser: null
   };
 
   startFetching = () => {
@@ -29,13 +29,15 @@ class StateProvider extends React.Component {
       };
     });
   };
-
+  refreshCurrentUser = async () => {
+    const currentUser = await getUser();
+    this.setState({ currentUser: currentUser || {} });
+  };
   isFetching = () => {
     return this.state.fetchCount > 0;
   };
   async componentDidMount() {
-    const currentUser = await getUser();
-    this.setState({ currentUser: currentUser || {} });
+    await this.refreshCurrentUser();
   }
   render() {
     return (
@@ -44,6 +46,7 @@ class StateProvider extends React.Component {
           isFetching: this.isFetching(),
           startFetching: this.startFetching,
           stopFetching: this.stopFetching,
+          refreshCurrentUser: this.refreshCurrentUser,
           currentUser: this.state.currentUser
         }}
       >
