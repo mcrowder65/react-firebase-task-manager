@@ -91,7 +91,8 @@
     "webpack": "export NODE_ENV=production && ./node_modules/.bin/webpack -p --progress",
     "bundlesize": "bundlesize",
     "analyze-bundle": "export ANALYZE_BUNDLE=true && npm run webpack",
-    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "deploy": "rm -rf build && npm run webpack && firebase deploy"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test/config.js",

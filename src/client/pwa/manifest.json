@@ -1,6 +1,6 @@
 {
-  "short_name": "React PWA",
-  "name": "My First React PWA",
+  "short_name": "Task Manager",
+  "name": "Task Manager",
   "icons": [
     {
       "src": "logo.png",
