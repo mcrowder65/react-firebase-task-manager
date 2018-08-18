@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { withStyles } from "@material-ui/core/styles";
 import firebase from "@firebase/app";
 
+import registerServiceWorker from "../registerServiceWorker";
 import Router from "./router";
 import { StateProvider } from "./components/state-utils";
 
@@ -37,3 +38,5 @@ const App = () => (
 
 /* global document */
 ReactDOM.render(<App />, document.getElementById("root"));
+
+registerServiceWorker();
