@@ -31,7 +31,8 @@ class Login extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     startFetching: PropTypes.func.isRequired,
-    stopFetching: PropTypes.func.isRequired
+    stopFetching: PropTypes.func.isRequired,
+    refreshCurrentUser: PropTypes.func.isRequired
   };
   state = {
     email: "",
@@ -48,10 +49,10 @@ class Login extends React.Component {
     try {
       this.props.startFetching();
       await login(email, password);
+      this.props.refreshCurrentUser();
       browserHistory.push(routes.HOME);
     } catch (error) {
       // TODO move to modal
-      // eslint-disable-next-line no-alert
       alert(error.message);
     } finally {
       this.props.stopFetching();

@@ -1,13 +1,8 @@
 
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": "2"
-      }
-    }],
+    "env",
     "react"
-
   ],
   "plugins": [
     "transform-object-rest-spread",
@@ -25,22 +20,27 @@
       "import",
       [
         {
+          "libraryName": "history",
+          "libraryDirectory": "",
+          "camel2DashComponentName": false
+        },
+        {
+          "libraryName": "react-router",
+          "libraryDirectory": "",
+          "camel2DashComponentName": false
+        },
+        {
+          "libraryName": "react-router-dom",
+          "libraryDirectory": "",
+          "camel2DashComponentName": false
+        },
+        {
           "libraryName": "@material-ui/core",
           "libraryDirectory": "",
           "camel2DashComponentName": false
         },
         {
           "libraryName": "@material-ui/icons",
-          "libraryDirectory": "",
-          "camel2DashComponentName": false
-        },
-        {
-          "libraryName": "lodash",
-          "libraryDirectory": "",
-          "camel2DashComponentName": false
-        },
-        {
-          "libraryName": "lodash/fp",
           "libraryDirectory": "",
           "camel2DashComponentName": false
         }

@@ -17,6 +17,7 @@ class LoaderCard extends React.Component {
       stopFetching,
       startFetching,
       currentUser,
+      refreshCurrentUser,
       ...otherProps
     } = this.props;
     return (
