@@ -5,7 +5,7 @@ import { getUser } from "../utils/firebase-utils";
 
 const { Provider, Consumer } = React.createContext();
 
-class StateProvider extends React.Component {
+export class StateProvider extends React.Component {
   static propTypes = {
     children: PropTypes.element.isRequired
   };
@@ -55,7 +55,31 @@ class StateProvider extends React.Component {
     );
   }
 }
+export const StateProps = props => (
+  <Consumer>{context => <SubComponent {...props} {...context} />}</Consumer>
+);
 
+class SubComponent extends React.Component {
+  static propTypes = {
+    children: PropTypes.any.isRequired,
+    startFetching: PropTypes.func.isRequired,
+    stopFetching: PropTypes.func.isRequired
+  };
+  networkRequest = async func => {
+    try {
+      this.props.startFetching();
+      await func();
+    } finally {
+      this.props.stopFetching();
+    }
+  };
+  render() {
+    return this.props.children({
+      ...this.props,
+      networkRequest: this.networkRequest
+    });
+  }
+}
 export const withStateProps = YourComponent => {
   return class extends React.Component {
     render() {
@@ -67,5 +91,3 @@ export const withStateProps = YourComponent => {
     }
   };
 };
-
-export { StateProvider };
