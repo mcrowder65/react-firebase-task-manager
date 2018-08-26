@@ -20,7 +20,7 @@ import { routes } from "./constants";
 import { browserHistory } from "./browser-history";
 import { Login, Home, Signup, AddReminder, Profile } from "./routes";
 import { withStateProps } from "./components/state-utils";
-import { logout } from "./utils/firebase-utils";
+import { logout } from "./services/firebase-service";
 
 const styles = {
   root: {

@@ -14,7 +14,7 @@ import { withStateProps } from "./state-utils";
 import LoaderCard from "./reusable/loader-card";
 import { browserHistory } from "../browser-history";
 import { routes } from "../constants";
-import { signup } from "../utils/firebase-utils";
+import { signup } from "../services/firebase-service";
 
 const styles = {
   content: {

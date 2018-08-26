@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { getUser } from "../utils/firebase-utils";
+import { getUser } from "../services/firebase-service";
 
 const { Provider, Consumer } = React.createContext();
 
