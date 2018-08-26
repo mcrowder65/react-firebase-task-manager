@@ -105,7 +105,8 @@
       "!src/client/browser-history.js",
       "!src/client/app.js",
       "!src/client/router.js",
-      "!src/server/index.js"
+      "!src/server/index.js",
+      "!src/client/pwa/manifest.json"
     ],
     "modulePaths": [
       "src/client/"
