@@ -92,7 +92,8 @@
     "bundlesize": "bundlesize",
     "analyze-bundle": "export ANALYZE_BUNDLE=true && npm run webpack",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
-    "deploy": "rm -rf build && npm run webpack && firebase deploy"
+    "deploy": "rm -rf build && npm run webpack && firebase deploy",
+    "deploy-functions": "cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js && firebase deploy"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test/config.js",
