@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "react-testing-library";
 
-import AddReminder from "../../routes/add-reminder";
+import Index from "../../routes/add-reminder/add-reminder";
 
 test("that home renders without errors", () => {
-  render(<AddReminder />);
+  render(<Index />);
 });
