@@ -106,7 +106,7 @@ class Router extends React.Component {
                 <Toolbar>
                   <Typography
                     onClick={this.routeToHome}
-                    variant="title"
+                    variant="h6"
                     color="inherit"
                     className={classes.flex}
                   >

@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { withStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  createMuiTheme,
+  MuiThemeProvider
+} from "@material-ui/core/styles";
 import firebase from "@firebase/app";
 
 import registerServiceWorker from "../registerServiceWorker";
@@ -26,14 +30,20 @@ firebase.initializeApp({
   storageBucket: "task-manager-82de4.appspot.com",
   messagingSenderId: "869805583292"
 });
-
+const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true
+  }
+});
 const Wrapper = withStyles(styles)(props => props.children);
 const App = () => (
-  <StateProvider>
-    <Wrapper>
-      <Router />
-    </Wrapper>
-  </StateProvider>
+  <MuiThemeProvider theme={theme}>
+    <StateProvider>
+      <Wrapper>
+        <Router />
+      </Wrapper>
+    </StateProvider>
+  </MuiThemeProvider>
 );
 
 /* global document */

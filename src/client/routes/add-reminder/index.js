@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { format } from "date-fns";
-import firebase from "@firebase/database";
 
 import LoaderCard from "../../components/reusable/loader-card";
 import { compose } from "../../utils";
+import { addReminder } from "../../services/reminder-service";
 
 class AddReminder extends React.Component {
   static propTypes = {
@@ -30,10 +30,9 @@ class AddReminder extends React.Component {
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
-  onSubmit = e => {
+  onSubmit = async e => {
     e.preventDefault();
-    const defaultDatabase = firebase.database();
-    console.log(defaultDatabase);
+    await addReminder(this.state);
   };
   render() {
     return (
@@ -43,7 +42,7 @@ class AddReminder extends React.Component {
           className={this.props.classes.card}
         >
           <form className={this.props.classes.content} onSubmit={this.onSubmit}>
-            <Typography variant="title">Reminder content</Typography>
+            <Typography variant="h6">Reminder content</Typography>
             <TextField
               name="receivingEmailAccount"
               onChange={this.onChange}
@@ -52,7 +51,7 @@ class AddReminder extends React.Component {
               label="Receiving email account"
               value={this.state.receivingEmailAccount}
             />
-            <Typography variant="body2">
+            <Typography variant="body1">
               {format(this.state.dateToSend, "dddd")}
             </Typography>
             <TextField
