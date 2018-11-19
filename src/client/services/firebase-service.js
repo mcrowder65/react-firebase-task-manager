@@ -1,7 +1,7 @@
 import firebase from "@firebase/app";
 import "@firebase/auth";
 
-export const getUser = () => {
+export const getUserFromFirebase = () => {
   return new Promise(resolve => {
     firebase.auth().onAuthStateChanged(user => resolve(user));
   });
