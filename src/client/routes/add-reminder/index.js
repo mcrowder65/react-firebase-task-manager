@@ -57,10 +57,10 @@ const styles = {
   card: {
     height: "65vh"
   },
+
   content: {
     height: "100%",
     width: "100%",
-    backgroundColor: "blue",
     justifyContent: "space-around",
     display: "flex",
     alignItems: "center",
