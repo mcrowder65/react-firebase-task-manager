@@ -34,7 +34,7 @@ class AddReminder extends React.Component {
   };
   onSubmit = async e => {
     e.preventDefault();
-    // await addReminder(this.state);
+    await addReminder(this.state);
     this.getReminders();
   };
 
@@ -46,7 +46,6 @@ class AddReminder extends React.Component {
     this.getReminders();
   }
   render() {
-    console.log("reminders ", this.state.reminders);
     return (
       <div className={this.props.classes.centered}>
         <LoaderCard
@@ -100,21 +99,19 @@ class AddReminder extends React.Component {
             </Button>
           </form>
         </LoaderCard>
-        <div className={this.props.classes.centeredRows}>
-          <div className={this.props.classes.reminders}>
-            {Object.values(this.state.reminders).map((reminder, index) => {
-              return (
-                <Reminder
-                  key={index}
-                  dateToSend={reminder.dateToSend}
-                  receivingEmailAccount={reminder.receivingEmailAccount}
-                  timeToSendReminder={reminder.timeToSendReminder}
-                  subject={reminder.subject}
-                  body={reminder.body}
-                />
-              );
-            })}
-          </div>
+        <div className={this.props.classes.reminders}>
+          {Object.values(this.state.reminders).map((reminder, index) => {
+            return (
+              <Reminder
+                key={index}
+                dateToSend={reminder.dateToSend}
+                receivingEmailAccount={reminder.receivingEmailAccount}
+                timeToSendReminder={reminder.timeToSendReminder}
+                subject={reminder.subject}
+                body={reminder.body}
+              />
+            );
+          })}
         </div>
       </div>
     );
@@ -128,15 +125,10 @@ const styles = {
     alignItems: "center",
     flexDirection: "column"
   },
-  centeredRows: {
-    marginTop: "30px",
+  reminders: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "blue"
-  },
-  reminders: {
-    display: "flex",
     flexWrap: "wrap"
   },
   receivingEmailAccount: {
