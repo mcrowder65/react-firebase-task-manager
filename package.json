@@ -52,6 +52,7 @@
     "postcss-loader": "2.1.5",
     "prettier": "1.14.2",
     "react-hot-loader": "4.3.3",
+    "react-testing-library": "^5.2.3",
     "sass-loader": "7.0.3",
     "style-loader": "0.21.0",
     "sw-precache-webpack-plugin": "^0.11.5",
@@ -93,7 +94,7 @@
     "analyze-bundle": "export ANALYZE_BUNDLE=true && npm run webpack",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "deploy": "rm -rf build && npm run webpack && firebase deploy",
-    "deploy-functions": "cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js && firebase deploy"
+    "deploy-functions": "cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js && firebase deploy && rm -rf functions/"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test/config.js",
