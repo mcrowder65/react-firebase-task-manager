@@ -15,5 +15,5 @@ export const Home = withLoadable(() => import("./routes/home"));
 export const Signup = withLoadable(() => import("./routes/signup"));
 export const Profile = withLoadable(() => import("./routes/profile"));
 export const AddReminder = withLoadable(() =>
-  import("./routes/add-reminder/index")
+  import("./routes/add-reminder")
 );

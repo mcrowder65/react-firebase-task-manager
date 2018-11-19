@@ -4,13 +4,10 @@ import { TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { format, isEqual, addDays } from "date-fns";
 
-import LoaderCard from "../../components/reusable/loader-card";
-import { compose, getFormattedDate } from "../../utils";
-import {
-  addReminder,
-  getUserRemindersByDay
-} from "../../models/reminder-model";
-import Reminder from "../../components/reminder";
+import LoaderCard from "../components/reusable/loader-card";
+import { compose, getFormattedDate } from "../utils";
+import { addReminder, getUserRemindersByDay } from "../models/reminder-model";
+import Reminder from "../components/reminder";
 
 class AddReminder extends React.Component {
   static propTypes = {
