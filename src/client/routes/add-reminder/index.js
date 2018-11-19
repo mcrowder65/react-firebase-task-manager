@@ -8,8 +8,9 @@ import LoaderCard from "../../components/reusable/loader-card";
 import { compose, getFormattedDate } from "../../utils";
 import {
   addReminder,
-  getCurrentUsersReminders
-} from "../../services/reminder-service";
+  getCurrentUsersReminders,
+  getUserRemindersByDay
+} from "../../models/reminder-model";
 import Reminder from "../../components/reminder";
 
 class AddReminder extends React.Component {
@@ -34,12 +35,18 @@ class AddReminder extends React.Component {
   };
   onSubmit = async e => {
     e.preventDefault();
-    await addReminder(this.state);
+    await addReminder({
+      dateToSend: this.state.dateToSend,
+      receivingEmailAccount: this.state.receivingEmailAccount,
+      timeToSendReminder: this.state.timeToSendReminder,
+      subject: this.state.subject,
+      body: this.state.body
+    });
     this.getReminders();
   };
 
   getReminders = async () => {
-    const reminders = await getCurrentUsersReminders();
+    const reminders = await getUserRemindersByDay(this.state.dateToSend);
     this.setState({ reminders: reminders || {} });
   };
   componentDidMount() {

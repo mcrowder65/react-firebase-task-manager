@@ -22,21 +22,19 @@ export const logout = () => {
 };
 
 const firebaseUrl = `https://task-manager-82de4.firebaseio.com`;
-export const addToTable = (tableName, bodyWithoutTimestamp) => {
+export const addToTable = (tableName, bodyWithoutTimestamp, authToken) => {
   const body = {
     ...bodyWithoutTimestamp,
     timestamp: new Date()
   };
-  return fetcher(`${firebaseUrl}/${tableName}.json`, {
+  return fetcher(`${firebaseUrl}/${tableName}.json?auth=${authToken}`, {
     method: "POST",
-    "Content-Type": "application/json",
     body: JSON.stringify(body)
   });
 };
 
-export const getTable = tableName => {
-  return fetcher(`${firebaseUrl}/${tableName}.json`, {
-    method: "GET",
-    "Content-Type": "application/json"
+export const getTable = (tableName, auth) => {
+  return fetcher(`${firebaseUrl}/${tableName}.json?auth=${auth}`, {
+    method: "GET"
   });
 };
