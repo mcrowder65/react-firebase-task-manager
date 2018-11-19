@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TextField, Typography, Button } from "@material-ui/core";
+import { TextField, Typography, Button, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { format } from "date-fns";
+import { PlusOne } from "@material-ui/icons";
+import { format, isEqual, addDays } from "date-fns";
 
 import LoaderCard from "../../components/reusable/loader-card";
 import { compose, getFormattedDate } from "../../utils";
 import {
   addReminder,
-  getCurrentUsersReminders,
   getUserRemindersByDay
 } from "../../models/reminder-model";
 import Reminder from "../../components/reminder";
@@ -44,7 +44,11 @@ class AddReminder extends React.Component {
     });
     this.getReminders();
   };
-
+  componentDidUpdate(prevProps, prevState) {
+    if (!isEqual(prevState.dateToSend, this.state.dateToSend)) {
+      this.getReminders();
+    }
+  }
   getReminders = async () => {
     const reminders = await getUserRemindersByDay(this.state.dateToSend);
     this.setState({ reminders: reminders || {} });
@@ -52,6 +56,13 @@ class AddReminder extends React.Component {
   componentDidMount() {
     this.getReminders();
   }
+  changeDateToSend = num => {
+    this.setState(state => {
+      return {
+        dateToSend: addDays(state.dateToSend, num)
+      };
+    });
+  };
   render() {
     return (
       <div className={this.props.classes.centered}>
@@ -72,14 +83,32 @@ class AddReminder extends React.Component {
             <Typography variant="body1">
               {format(this.state.dateToSend, "dddd")}
             </Typography>
-            <TextField
-              id="date"
-              onChange={this.onChange}
-              name="dateToSend"
-              value={getFormattedDate(this.state.dateToSend)}
-              label="Date to send reminder"
-              type="date"
-            />
+            <div className={this.props.classes.datePicker}>
+              <Button
+                className={this.props.classes.plusser}
+                color="primary"
+                variant="contained"
+                onClick={() => this.changeDateToSend(-1)}
+              >
+                -1
+              </Button>
+              <TextField
+                id="date"
+                onChange={this.onChange}
+                name="dateToSend"
+                value={getFormattedDate(this.state.dateToSend)}
+                label="Date to send reminder"
+                type="date"
+              />
+              <Button
+                className={this.props.classes.plusser}
+                color="primary"
+                variant="contained"
+                onClick={() => this.changeDateToSend(1)}
+              >
+                +1
+              </Button>
+            </div>
             <TextField
               name="timeToSendReminder"
               className={this.props.classes.timeToSendReminder}
@@ -139,10 +168,10 @@ const styles = {
     flexWrap: "wrap"
   },
   receivingEmailAccount: {
-    width: "300px"
+    width: "250px"
   },
   timeToSendReminder: {
-    width: "225px"
+    width: "200px"
   },
   card: {
     height: "65vh",
@@ -155,6 +184,18 @@ const styles = {
     display: "flex",
     alignItems: "center",
     flexDirection: "column"
+  },
+  datePicker: {
+    width: "250px",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  plusser: {
+    maxWidth: "15px",
+    minWidth: "15px",
+    maxHeight: "40px",
+    minHeight: "40px"
   }
 };
 
