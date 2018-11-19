@@ -10,8 +10,8 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from "../utils";
-import LoaderCard from "./reusable/loader-card";
-import { StateProps } from "./state-utils";
+import LoaderCard from "../components/reusable/loader-card";
+import { StateProps } from "../components/state-utils";
 import { browserHistory } from "../browser-history";
 import { routes } from "../constants";
 import { login } from "../utils/firebase-utils";
