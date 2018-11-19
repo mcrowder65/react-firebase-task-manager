@@ -5,8 +5,12 @@ import { withStyles } from "@material-ui/core/styles";
 import { format } from "date-fns";
 
 import LoaderCard from "../../components/reusable/loader-card";
-import { compose } from "../../utils";
-import { addReminder } from "../../services/reminder-service";
+import { compose, getFormattedDate } from "../../utils";
+import {
+  addReminder,
+  getCurrentUsersReminders
+} from "../../services/reminder-service";
+import Reminder from "../../components/reminder";
 
 class AddReminder extends React.Component {
   static propTypes = {
@@ -16,25 +20,33 @@ class AddReminder extends React.Component {
   static defaultProps = {
     isFetching: false
   };
-  getFormattedDateToSend = d => {
-    return format(d, "YYYY-MM-DD");
-  };
 
   state = {
     receivingEmailAccount: "mcrowder65@gmail.com",
     dateToSend: new Date(),
     timeToSendReminder: "11:25",
     subject: "hello world!",
-    body: ""
+    body: "",
+    reminders: {}
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = async e => {
     e.preventDefault();
-    await addReminder(this.state);
+    // await addReminder(this.state);
+    this.getReminders();
   };
+
+  getReminders = async () => {
+    const reminders = await getCurrentUsersReminders();
+    this.setState({ reminders: reminders || {} });
+  };
+  componentDidMount() {
+    this.getReminders();
+  }
   render() {
+    console.log("reminders ", this.state.reminders);
     return (
       <div className={this.props.classes.centered}>
         <LoaderCard
@@ -58,7 +70,7 @@ class AddReminder extends React.Component {
               id="date"
               onChange={this.onChange}
               name="dateToSend"
-              value={this.getFormattedDateToSend(this.state.dateToSend)}
+              value={getFormattedDate(this.state.dateToSend)}
               label="Date to send reminder"
               type="date"
             />
@@ -88,6 +100,22 @@ class AddReminder extends React.Component {
             </Button>
           </form>
         </LoaderCard>
+        <div className={this.props.classes.centeredRows}>
+          <div className={this.props.classes.reminders}>
+            {Object.values(this.state.reminders).map((reminder, index) => {
+              return (
+                <Reminder
+                  key={index}
+                  dateToSend={reminder.dateToSend}
+                  receivingEmailAccount={reminder.receivingEmailAccount}
+                  timeToSendReminder={reminder.timeToSendReminder}
+                  subject={reminder.subject}
+                  body={reminder.body}
+                />
+              );
+            })}
+          </div>
+        </div>
       </div>
     );
   }
@@ -97,7 +125,19 @@ const styles = {
   centered: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    flexDirection: "column"
+  },
+  centeredRows: {
+    marginTop: "30px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "blue"
+  },
+  reminders: {
+    display: "flex",
+    flexWrap: "wrap"
   },
   receivingEmailAccount: {
     width: "300px"
@@ -109,7 +149,6 @@ const styles = {
     height: "65vh",
     width: "50%"
   },
-
   content: {
     height: "100%",
     width: "100%",

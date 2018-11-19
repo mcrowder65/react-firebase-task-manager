@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 // copy and paste from redux/compose
 export const compose = (...funcs) => {
   if (funcs.length === 0) {
@@ -10,3 +12,5 @@ export const compose = (...funcs) => {
 
   return funcs.reduce((a, b) => (...args) => a(b(...args)));
 };
+
+export const getFormattedDate = d => format(d, "YYYY-MM-DD");
