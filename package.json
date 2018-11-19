@@ -42,8 +42,6 @@
     "copy-webpack-plugin": "^4.5.2",
     "coveralls": "3.0.2",
     "css-loader": "0.28.11",
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.2.0",
     "eslint-config-mcrowder65": "0.0.31",
     "fetch-mock": "6.4.4",
     "identity-obj-proxy": "3.0.0",
