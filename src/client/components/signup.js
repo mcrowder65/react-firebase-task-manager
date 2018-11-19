@@ -10,7 +10,7 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from "../utils";
-import { withStateProps } from "./state-utils";
+import { StateProps } from "./state-utils";
 import LoaderCard from "./reusable/loader-card";
 import { browserHistory } from "../browser-history";
 import { routes } from "../constants";
@@ -29,10 +29,7 @@ const styles = {
 };
 class Login extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
-    startFetching: PropTypes.func.isRequired,
-    stopFetching: PropTypes.func.isRequired,
-    refreshCurrentUser: PropTypes.func.isRequired
+    classes: PropTypes.object.isRequired
   };
   state = {
     email: "",
@@ -42,21 +39,18 @@ class Login extends React.Component {
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
-  onSubmit = async e => {
+  onSubmit = async (e, refreshCurrentUser) => {
     const { email, password } = this.state;
     if (email && password && e.preventDefault) {
       e.preventDefault();
     }
     try {
-      this.props.startFetching();
       await signup(email, password);
-      this.props.refreshCurrentUser();
+      refreshCurrentUser();
       browserHistory.push(routes.HOME);
     } catch (error) {
       // TODO move to modal
       alert(error.message);
-    } finally {
-      this.props.stopFetching();
     }
   };
   render() {
@@ -64,50 +58,59 @@ class Login extends React.Component {
     return (
       <div className={classes.content}>
         <LoaderCard className={classes.card}>
-          <Typography variant="headline">Sign up</Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input
-                id="email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={this.state.email}
-                onChange={this.onChange}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={this.state.password}
-                onChange={this.onChange}
-              />
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="raised"
-              color="primary"
-              className={classes.submit}
-              onClick={this.onSubmit}
-            >
-              Sign in
-            </Button>
-          </form>
+          <StateProps>
+            {context => {
+              return (
+                <React.Fragment>
+                  <Typography variant="headline">Sign up</Typography>
+                  <form className={classes.form}>
+                    <FormControl margin="normal" required fullWidth>
+                      <InputLabel htmlFor="email">Email Address</InputLabel>
+                      <Input
+                        id="email"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        value={this.state.email}
+                        onChange={this.onChange}
+                      />
+                    </FormControl>
+                    <FormControl margin="normal" required fullWidth>
+                      <InputLabel htmlFor="password">Password</InputLabel>
+                      <Input
+                        name="password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={this.state.password}
+                        onChange={this.onChange}
+                      />
+                    </FormControl>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="raised"
+                      color="primary"
+                      className={classes.submit}
+                      onClick={e =>
+                        context.networkRequest(() =>
+                          this.onSubmit(e, context.refreshCurrentUser)
+                        )
+                      }
+                    >
+                      Sign in
+                    </Button>
+                  </form>
+                </React.Fragment>
+              );
+            }}
+          </StateProps>
         </LoaderCard>
       </div>
     );
   }
 }
 
-const enhance = compose(
-  withStateProps,
-  withStyles(styles)
-);
+const enhance = compose(withStyles(styles));
 
 export default enhance(Login);
