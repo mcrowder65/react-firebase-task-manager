@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TextField, Typography, Button, IconButton } from "@material-ui/core";
+import { TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { PlusOne } from "@material-ui/icons";
 import { format, isEqual, addDays } from "date-fns";
 
 import LoaderCard from "../../components/reusable/loader-card";
@@ -28,6 +27,7 @@ class AddReminder extends React.Component {
     timeToSendReminder: "11:25",
     subject: "hello world!",
     body: "",
+    isFocused: 0,
     reminders: {}
   };
   onChange = e => {
@@ -53,13 +53,33 @@ class AddReminder extends React.Component {
     const reminders = await getUserRemindersByDay(this.state.dateToSend);
     this.setState({ reminders: reminders || {} });
   };
+  handleKey = ({ key }) => {
+    if (this.state.isFocused === 0) {
+      if (key === "ArrowLeft") {
+        this.changeDateToSend(-1);
+      } else if (key === "ArrowRight") {
+        this.changeDateToSend(1);
+      }
+    }
+  };
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKey);
+  }
   componentDidMount() {
+    window.addEventListener("keydown", this.handleKey);
     this.getReminders();
   }
   changeDateToSend = num => {
     this.setState(state => {
       return {
         dateToSend: addDays(state.dateToSend, num)
+      };
+    });
+  };
+  onFocus = num => {
+    this.setState(state => {
+      return {
+        isFocused: num + state.isFocused
       };
     });
   };
@@ -73,6 +93,8 @@ class AddReminder extends React.Component {
           <form className={this.props.classes.content} onSubmit={this.onSubmit}>
             <Typography variant="h6">Reminder content</Typography>
             <TextField
+              onBlur={() => this.onFocus(-1)}
+              onFocus={() => this.onFocus(1)}
               name="receivingEmailAccount"
               onChange={this.onChange}
               className={this.props.classes.receivingEmailAccount}
@@ -94,6 +116,8 @@ class AddReminder extends React.Component {
               </Button>
               <TextField
                 id="date"
+                onBlur={() => this.onFocus(-1)}
+                onFocus={() => this.onFocus(1)}
                 onChange={this.onChange}
                 name="dateToSend"
                 value={getFormattedDate(this.state.dateToSend)}
@@ -110,6 +134,8 @@ class AddReminder extends React.Component {
               </Button>
             </div>
             <TextField
+              onBlur={() => this.onFocus(-1)}
+              onFocus={() => this.onFocus(1)}
               name="timeToSendReminder"
               className={this.props.classes.timeToSendReminder}
               required
@@ -118,6 +144,8 @@ class AddReminder extends React.Component {
               onChange={this.onChange}
             />
             <TextField
+              onBlur={() => this.onFocus(-1)}
+              onFocus={() => this.onFocus(1)}
               name="subject"
               value={this.state.subject}
               onChange={this.onChange}
@@ -125,6 +153,8 @@ class AddReminder extends React.Component {
               label="Subject"
             />
             <TextField
+              onBlur={() => this.onFocus(-1)}
+              onFocus={() => this.onFocus(1)}
               label="Body"
               name="body"
               value={this.state.body}
