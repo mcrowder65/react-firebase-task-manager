@@ -1,9 +1,14 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render } from "react-testing-library";
 
 import Login from "../login";
+import { StateProvider } from "../state-utils";
 
 test("that login mounts with no errors", () => {
-  const comp = mount(<Login />);
+  const comp = render(
+    <StateProvider>
+      <Login />
+    </StateProvider>
+  );
   expect(comp).toBeTruthy();
 });

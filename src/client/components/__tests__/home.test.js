@@ -1,9 +1,9 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render } from "react-testing-library";
 
 import Home from "../home";
 
 test("that home renders without errors", () => {
-  const comp = mount(<Home />);
+  const comp = render(<Home />);
   expect(comp).toBeTruthy();
 });

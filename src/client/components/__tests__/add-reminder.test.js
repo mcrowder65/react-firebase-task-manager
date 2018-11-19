@@ -1,9 +1,8 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render } from "react-testing-library";
 
 import AddReminder from "../add-reminder";
 
 test("that home renders without errors", () => {
-  const comp = mount(<AddReminder />);
-  expect(comp).toBeTruthy();
+  render(<AddReminder />);
 });

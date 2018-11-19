@@ -1,9 +1,9 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render } from "react-testing-library";
 
 import Profile from "../profile";
 
 test("that login mounts with no errors", () => {
-  const comp = mount(<Profile />);
+  const comp = render(<Profile />);
   expect(comp).toBeTruthy();
 });
