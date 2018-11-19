@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { getUser } from "../services/firebase-service";
+import { getUserFromFirebase } from "../services/firebase-service";
 
 const { Provider, Consumer } = React.createContext();
 
@@ -30,7 +30,7 @@ class StateProvider extends React.Component {
     });
   };
   refreshCurrentUser = async () => {
-    const currentUser = await getUser();
+    const currentUser = await getUserFromFirebase();
     this.setState({ currentUser: currentUser || {} });
   };
   isFetching = () => {
