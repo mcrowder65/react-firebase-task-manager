@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { format } from "date-fns";
+import firebase from "@firebase/database";
 
 import LoaderCard from "../../components/reusable/loader-card";
 import { compose } from "../../utils";
@@ -22,8 +23,8 @@ class AddReminder extends React.Component {
   state = {
     receivingEmailAccount: "mcrowder65@gmail.com",
     dateToSend: new Date(),
-    timeToSendReminder: "",
-    subject: "",
+    timeToSendReminder: "11:25",
+    subject: "hello world!",
     body: ""
   };
   onChange = e => {
@@ -31,6 +32,8 @@ class AddReminder extends React.Component {
   };
   onSubmit = e => {
     e.preventDefault();
+    const defaultDatabase = firebase.database();
+    console.log(defaultDatabase);
   };
   render() {
     return (
