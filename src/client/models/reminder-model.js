@@ -8,15 +8,10 @@ export const addReminder = async previousMetadata => {
     ...previousMetadata,
     dateToSend: getFormattedDate(previousMetadata.dateToSend)
   };
-  return addToTable(
-    `reminders/${currentUser.uid}/${metadata.dateToSend}`,
-    metadata,
-    currentUser.qa
-  );
+  return addToTable(`reminders/${currentUser.uid}`, metadata, currentUser.qa);
 };
 
-export const getUserRemindersByDay = async unformattedDate => {
-  const date = getFormattedDate(unformattedDate);
+export const getUserRemindersByDay = async date => {
   const currentUser = await getUser();
-  return getTable(`reminders/${currentUser.uid}/${date}`, currentUser.qa);
+  return getTable(`reminders/${currentUser.uid}`, currentUser.qa);
 };

@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 import { TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { format, isEqual, addDays } from "date-fns";
+import firebase from "@firebase/app";
+import "@firebase/database";
 
 import LoaderCard from "../components/reusable/loader-card";
 import { compose, getFormattedDate } from "../utils";
 import { addReminder, getUserRemindersByDay } from "../models/reminder-model";
 import Reminder from "../components/reminder";
+import { getUser } from "../models/user-model";
 
 class AddReminder extends React.Component {
   static propTypes = {
@@ -39,17 +42,13 @@ class AddReminder extends React.Component {
       subject: this.state.subject,
       body: this.state.body
     });
-    this.getReminders();
   };
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevState.dateToSend, this.state.dateToSend)) {
-      this.getReminders();
+      // this.getReminders();
     }
   }
-  getReminders = async () => {
-    const reminders = await getUserRemindersByDay(this.state.dateToSend);
-    this.setState({ reminders: reminders || {} });
-  };
+
   handleKey = ({ key }) => {
     if (this.state.isFocused === 0) {
       if (key === "ArrowLeft") {
@@ -62,9 +61,15 @@ class AddReminder extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("keydown", this.handleKey);
   }
-  componentDidMount() {
+  async componentDidMount() {
     window.addEventListener("keydown", this.handleKey);
-    this.getReminders();
+    const currentUser = await getUser();
+    const remindersRef = firebase
+      .database()
+      .ref(`reminders/${currentUser.uid}`);
+    remindersRef.on("value", snapshot => {
+      this.setState({ reminders: snapshot.val() || {} });
+    });
   }
   changeDateToSend = num => {
     this.setState(state => {
