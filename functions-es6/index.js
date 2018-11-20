@@ -53,34 +53,31 @@ admin.initializeApp({
 
 const getRemindersToSend = async () => {
   const db = admin.database();
-
   const ref = db.ref("reminders");
   const snapshot = await ref.once("value");
   const data = snapshot.val();
   const userIds = Object.keys(data);
-  const reminders = await Promise.all(
+  return Promise.all(
     userIds.map(async userId => {
       const r = db
         .ref(`reminders/${userId}`)
         .orderByChild("millisecondsToSend")
         .endAt(getTime(format(new Date())));
       const s = await r.once("value");
-      return Object.values(s.val());
+      return s.val();
     })
   );
-  const reducedReminders = reminders.reduce((accum, val) => {
-    return accum.concat(val);
-  }, []);
-  const vals = reducedReminders.filter(r => {
-    return isAfter(new Date(), r.millisecondsToSend);
-  });
-  return vals;
+};
+
+const deleteReminder = async (id, uid) => {
+  const db = admin.database();
+  await db.ref(`reminders/${uid}/${id}`).remove();
 };
 exports.helloWorld = functions.https.onRequest(async (req, reply) => {
   if (req.body.token === "my-password" || req.params.token === "my-password") {
     const remindersToSend = await getRemindersToSend();
     await Promise.all(
-      remindersToSend.map(async reminder => {
+      Object.values(remindersToSend).map(async reminder => {
         await sendReminder({
           senderEmail: "matt.taskmanager@gmail.com",
           senderPassword: "mattcrowder123",
@@ -88,6 +85,11 @@ exports.helloWorld = functions.https.onRequest(async (req, reply) => {
           emailBody: reminder.body,
           receiverEmail: reminder.receivingEmailAccount
         });
+      })
+    );
+    await Promise.all(
+      Object.entries(remindersToSend).map(async ([id, { uid }]) => {
+        await deleteReminder(id, uid);
       })
     );
     reply.send(remindersToSend);
