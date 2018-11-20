@@ -15,7 +15,8 @@ const main = async () => {
 
   const ref = db.ref("reminders");
   const snapshot = await ref.once("value");
-  const data = snapshot.val();
+
+  const data = snapshot.val() || {};
   const userIds = Object.keys(data);
   const result = await Promise.all(
     userIds.map(async userId => {
