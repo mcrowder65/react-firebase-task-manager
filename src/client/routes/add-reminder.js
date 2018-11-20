@@ -46,6 +46,7 @@ class AddReminder extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevState.dateToSend, this.state.dateToSend)) {
       // this.getReminders();
+      this.setupRef();
     }
   }
 
@@ -61,15 +62,22 @@ class AddReminder extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("keydown", this.handleKey);
   }
-  async componentDidMount() {
-    window.addEventListener("keydown", this.handleKey);
+  setupRef = async () => {
     const currentUser = await getUser();
+
     const remindersRef = firebase
       .database()
-      .ref(`reminders/${currentUser.uid}`);
+      .ref(`reminders/${currentUser.uid}`)
+      .orderByChild("dateToSend")
+      .equalTo(getFormattedDate(this.state.dateToSend));
     remindersRef.on("value", snapshot => {
+      console.log("snapshot.val() ", snapshot.val());
       this.setState({ reminders: snapshot.val() || {} });
     });
+  };
+  componentDidMount() {
+    this.setupRef();
+    window.addEventListener("keydown", this.handleKey);
   }
   changeDateToSend = num => {
     this.setState(state => {
