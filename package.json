@@ -6,6 +6,7 @@
   "dependencies": {
     "@firebase/app": "0.3.3",
     "@firebase/auth": "0.7.2",
+    "@firebase/database": "0.3.6",
     "@material-ui/core": "3.2.0",
     "@material-ui/icons": "3.0.1",
     "babel-runtime": "6.26.0",
@@ -84,7 +85,7 @@
     {
       "path": "./build/!(main)*.bundle.js",
       "compression": "gzip",
-      "maxSize": "30 kB"
+      "maxSize": "75 kB"
     }
   ],
   "scripts": {
@@ -99,7 +100,7 @@
     "analyze-bundle": "export ANALYZE_BUNDLE=true && npm run webpack",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "deploy": "rm -rf build && npm run webpack && firebase deploy",
-    "deploy-functions": "cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js && firebase deploy && rm -rf functions/"
+    "deploy-functions": "rm -rf build && npm run webpack && rm -rf functions && cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js && firebase deploy && rm -rf functions/"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test/config.js",
@@ -118,6 +119,7 @@
     "modulePaths": [
       "src/client/"
     ],
+    "roots": ["src"],
     "coverageReporters": [
       "lcov"
     ]

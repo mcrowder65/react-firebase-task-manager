@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 import { TextField, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { format, isEqual, addDays } from "date-fns";
+import firebase from "@firebase/app";
+import "@firebase/database";
 
 import LoaderCard from "../components/reusable/loader-card";
 import { compose, getFormattedDate } from "../utils";
-import { addReminder, getUserRemindersByDay } from "../models/reminder-model";
+import { addReminder } from "../models/reminder-model";
 import Reminder from "../components/reminder";
+import { getUser } from "../models/user-model";
 
 class AddReminder extends React.Component {
   static propTypes = {
@@ -39,17 +42,12 @@ class AddReminder extends React.Component {
       subject: this.state.subject,
       body: this.state.body
     });
-    this.getReminders();
   };
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevState.dateToSend, this.state.dateToSend)) {
-      this.getReminders();
+      this.setupRef();
     }
   }
-  getReminders = async () => {
-    const reminders = await getUserRemindersByDay(this.state.dateToSend);
-    this.setState({ reminders: reminders || {} });
-  };
   handleKey = ({ key }) => {
     if (this.state.isFocused === 0) {
       if (key === "ArrowLeft") {
@@ -62,9 +60,21 @@ class AddReminder extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("keydown", this.handleKey);
   }
+  setupRef = async () => {
+    const currentUser = await getUser();
+
+    const remindersRef = firebase
+      .database()
+      .ref(`reminders/${currentUser.uid}`)
+      .orderByChild("dateToSend")
+      .equalTo(getFormattedDate(this.state.dateToSend));
+    remindersRef.on("value", snapshot => {
+      this.setState({ reminders: snapshot.val() || {} });
+    });
+  };
   componentDidMount() {
+    this.setupRef();
     window.addEventListener("keydown", this.handleKey);
-    this.getReminders();
   }
   changeDateToSend = num => {
     this.setState(state => {
@@ -79,6 +89,20 @@ class AddReminder extends React.Component {
         isFocused: num + state.isFocused
       };
     });
+  };
+
+  getReminders = () => {
+    const reminders = Object.values(this.state.reminders);
+    reminders.sort((a, b) => {
+      if (a.millisecondsToSend > b.millisecondsToSend) {
+        return 1;
+      } else if (a.millisecondsToSend < b.millisecondsToSend) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    return reminders;
   };
   render() {
     return (
@@ -163,7 +187,7 @@ class AddReminder extends React.Component {
           </form>
         </LoaderCard>
         <div className={this.props.classes.reminders}>
-          {Object.values(this.state.reminders).map((reminder, index) => {
+          {this.getReminders().map((reminder, index) => {
             return (
               <Reminder
                 key={index}
@@ -202,7 +226,8 @@ const styles = {
   },
   card: {
     height: "65vh",
-    width: "50%"
+    width: "50%",
+    minHeight: "400px"
   },
   content: {
     height: "100%",

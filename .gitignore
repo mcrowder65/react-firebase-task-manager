@@ -3,3 +3,7 @@ node_modules
 coverage
 build
 .firebase
+functions
+functions-es6/build-index.js
+functions-es6/build-index.js
+functions-es6/private-key.json
