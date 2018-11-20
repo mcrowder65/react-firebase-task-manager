@@ -100,7 +100,7 @@ exports.helloWorld = functions.https.onRequest(async (req, reply) => {
         await deleteReminder(id, uid);
       })
     );
-    reply.send(remindersToSend);
+    reply.send("success!");
   } else {
     reply.send(
       `you are not allowed access ${JSON.stringify(req.body)} req.body.token: ${
