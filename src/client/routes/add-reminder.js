@@ -43,7 +43,9 @@ class AddReminder extends React.Component {
         receivingEmailAccount: this.state.receivingEmailAccount,
         timeToSendReminder: this.state.timeToSendReminder,
         subject: this.state.subject,
-        body: this.state.body
+        body: this.state.body,
+        sendingEmailAccount: this.state.sendingEmailAccount,
+        sendingEmailPassword: this.state.sendingEmailPassword
       });
     });
   };
@@ -76,12 +78,20 @@ class AddReminder extends React.Component {
       this.setState({ reminders: snapshot.val() || {} });
     });
   };
-  getReceivingEmailAccount = async () => {
-    const { receivingEmailAccount } = await getUserMetadata();
-    this.setState({ receivingEmailAccount });
+  getUserMetadata = async () => {
+    const {
+      receivingEmailAccount,
+      sendingEmailAccount,
+      sendingEmailPassword
+    } = await getUserMetadata();
+    this.setState({
+      receivingEmailAccount,
+      sendingEmailAccount,
+      sendingEmailPassword
+    });
   };
   componentDidMount() {
-    this.getReceivingEmailAccount();
+    this.getUserMetadata();
     this.setupRef();
     window.addEventListener("keydown", this.handleKey);
   }
