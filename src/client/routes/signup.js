@@ -63,7 +63,7 @@ class Login extends React.Component {
               return (
                 <React.Fragment>
                   <Typography variant="headline">Sign up</Typography>
-                  <form className={classes.form}>
+                  <form className={classes.content}>
                     <FormControl margin="normal" required fullWidth>
                       <InputLabel htmlFor="email">Email Address</InputLabel>
                       <Input

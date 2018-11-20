@@ -91,3 +91,31 @@ export const withStateProps = YourComponent => {
     }
   };
 };
+
+export const withApiCall = YourComponent => {
+  return class extends React.Component {
+    state = {
+      isFetching: false
+    };
+    apiCall = async yourApiCall => {
+      try {
+        this.setState({ isFetching: true });
+        const result = await yourApiCall();
+        return result;
+      } catch (e) {
+        throw e;
+      } finally {
+        this.setState({ isFetching: false });
+      }
+    };
+    render() {
+      return (
+        <YourComponent
+          {...this.props}
+          isFetching={this.state.isFetching}
+          apiCall={this.apiCall}
+        />
+      );
+    }
+  };
+};
