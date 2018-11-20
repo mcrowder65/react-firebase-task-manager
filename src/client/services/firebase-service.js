@@ -33,6 +33,16 @@ export const addToTable = (tableName, bodyWithoutTimestamp, authToken) => {
   });
 };
 
+export const setTable = (tableName, bodyWithoutTimestamp, authToken) => {
+  const body = {
+    ...bodyWithoutTimestamp,
+    lastEdited: new Date()
+  };
+  return fetcher(`${firebaseUrl}/${tableName}.json?auth=${authToken}`, {
+    method: "PUT",
+    body: JSON.stringify(body)
+  });
+};
 export const getTable = (tableName, auth) => {
   return fetcher(`${firebaseUrl}/${tableName}.json?auth=${auth}`, {
     method: "GET"

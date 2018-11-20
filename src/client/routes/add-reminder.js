@@ -1,28 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TextField, Typography, Button } from "@material-ui/core";
+import { TextField, Typography, Button, Card } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { format, isEqual, addDays } from "date-fns";
 import firebase from "@firebase/app";
 import "@firebase/database";
 
-import LoaderCard from "../components/reusable/loader-card";
 import { compose, getFormattedDate } from "../utils";
 import { addReminder } from "../models/reminder-model";
 import Reminder from "../components/reminder";
-import { getUser } from "../models/user-model";
+import { getUser, getUserMetadata } from "../models/user-model";
+import LoaderButton from "../components/reusable/loader-button";
+import { withApiCall } from "../components/state-utils";
 
 class AddReminder extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    isFetching: PropTypes.bool.isRequired
+    isFetching: PropTypes.bool.isRequired,
+    apiCall: PropTypes.func.isRequired
   };
   static defaultProps = {
     isFetching: false
   };
 
   state = {
-    receivingEmailAccount: "mcrowder65@gmail.com",
+    receivingEmailAccount: "",
     dateToSend: new Date(),
     timeToSendReminder: "11:25",
     subject: "hello world!",
@@ -35,12 +37,14 @@ class AddReminder extends React.Component {
   };
   onSubmit = async e => {
     e.preventDefault();
-    await addReminder({
-      dateToSend: this.state.dateToSend,
-      receivingEmailAccount: this.state.receivingEmailAccount,
-      timeToSendReminder: this.state.timeToSendReminder,
-      subject: this.state.subject,
-      body: this.state.body
+    await this.props.apiCall(async () => {
+      await addReminder({
+        dateToSend: this.state.dateToSend,
+        receivingEmailAccount: this.state.receivingEmailAccount,
+        timeToSendReminder: this.state.timeToSendReminder,
+        subject: this.state.subject,
+        body: this.state.body
+      });
     });
   };
   componentDidUpdate(prevProps, prevState) {
@@ -72,7 +76,12 @@ class AddReminder extends React.Component {
       this.setState({ reminders: snapshot.val() || {} });
     });
   };
+  getReceivingEmailAccount = async () => {
+    const { receivingEmailAccount } = await getUserMetadata();
+    this.setState({ receivingEmailAccount });
+  };
   componentDidMount() {
+    this.getReceivingEmailAccount();
     this.setupRef();
     window.addEventListener("keydown", this.handleKey);
   }
@@ -107,7 +116,7 @@ class AddReminder extends React.Component {
   render() {
     return (
       <div className={this.props.classes.centered}>
-        <LoaderCard
+        <Card
           isFetching={this.props.isFetching}
           className={this.props.classes.card}
         >
@@ -181,11 +190,16 @@ class AddReminder extends React.Component {
               value={this.state.body}
               onChange={this.onChange}
             />
-            <Button variant="contained" color="primary" type="submit">
+            <LoaderButton
+              isFetching={this.props.isFetching}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
               Set reminder
-            </Button>
+            </LoaderButton>
           </form>
-        </LoaderCard>
+        </Card>
         <div className={this.props.classes.reminders}>
           {this.getReminders().map((reminder, index) => {
             return (
@@ -251,5 +265,8 @@ const styles = {
   }
 };
 
-const enhance = compose(withStyles(styles));
+const enhance = compose(
+  withStyles(styles),
+  withApiCall
+);
 export default enhance(AddReminder);
