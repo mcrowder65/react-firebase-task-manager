@@ -15,7 +15,7 @@ export const addReminder = async previousMetadata => {
   return addToTable(`reminders/${currentUser.uid}`, metadata, currentUser.qa);
 };
 
-export const getUserRemindersByDay = async date => {
+export const getUserRemindersByDay = async () => {
   const currentUser = await getUser();
 
   const snapshot = await firebase

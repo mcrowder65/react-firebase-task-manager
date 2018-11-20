@@ -68,7 +68,7 @@ const getRemindersToSend = async () => {
     })
   );
   const reducedReminders = reminders.reduce((accum, val) => {
-    return [...accum, ...val];
+    return accum.concat(val);
   }, []);
   return reducedReminders.filter(r => {
     return isAfter(
