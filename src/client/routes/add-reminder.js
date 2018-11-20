@@ -94,6 +94,7 @@ class AddReminder extends React.Component {
     });
   };
   render() {
+    console.log(this.state.reminders);
     return (
       <div className={this.props.classes.centered}>
         <LoaderCard
@@ -215,7 +216,8 @@ const styles = {
   },
   card: {
     height: "65vh",
-    width: "50%"
+    width: "50%",
+    minHeight: "400px"
   },
   content: {
     height: "100%",
