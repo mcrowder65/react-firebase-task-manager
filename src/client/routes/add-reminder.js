@@ -90,6 +90,20 @@ class AddReminder extends React.Component {
       };
     });
   };
+
+  getReminders = () => {
+    const reminders = Object.values(this.state.reminders);
+    reminders.sort((a, b) => {
+      if (a.millisecondsToSend > b.millisecondsToSend) {
+        return 1;
+      } else if (a.millisecondsToSend < b.millisecondsToSend) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    return reminders;
+  };
   render() {
     return (
       <div className={this.props.classes.centered}>
@@ -173,7 +187,7 @@ class AddReminder extends React.Component {
           </form>
         </LoaderCard>
         <div className={this.props.classes.reminders}>
-          {Object.values(this.state.reminders).map((reminder, index) => {
+          {this.getReminders().map((reminder, index) => {
             return (
               <Reminder
                 key={index}
