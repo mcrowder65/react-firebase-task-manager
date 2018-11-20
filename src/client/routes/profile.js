@@ -15,8 +15,9 @@ class Profile extends React.Component {
     apiCall: PropTypes.func.isRequired
   };
   state = {
-    email: "",
-    receivingEmailAccount: ""
+    receivingEmailAccount: "",
+    sendingEmailAccount: "",
+    sendingEmailPassword: ""
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -25,33 +26,31 @@ class Profile extends React.Component {
     e.preventDefault();
     this.props.apiCall(() =>
       setUser({
-        email: this.state.email,
-        receivingEmailAccount: this.state.receivingEmailAccount
+        receivingEmailAccount: this.state.receivingEmailAccount,
+        sendingEmailAccount: this.state.sendingEmailAccount,
+        sendingEmailPassword: this.state.sendingEmailPassword
       })
     );
   };
   async componentDidMount() {
-    const { email, receivingEmailAccount } = await getUserMetadata();
+    const {
+      receivingEmailAccount,
+      sendingEmailAccount,
+      sendingEmailPassword
+    } = await getUserMetadata();
     this.setState({
-      email,
-      receivingEmailAccount
+      receivingEmailAccount,
+      sendingEmailAccount,
+      sendingEmailPassword
     });
   }
   render() {
     return (
       <div className={this.props.classes.centered}>
-        {this.props.isFetching ? "fetching..." : null}
         <Card className={this.props.classes.card}>
           <form className={this.props.classes.content} onSubmit={this.onSubmit}>
             <TextField
-              className={this.props.classes.email}
-              label="Email"
-              required
-              name="email"
-              value={this.state.email}
-              onChange={this.onChange}
-            />
-            <TextField
+              type="email"
               className={this.props.classes.email}
               label="Default Receiving Email"
               required
@@ -59,8 +58,29 @@ class Profile extends React.Component {
               onChange={this.onChange}
               value={this.state.receivingEmailAccount}
             />
-
-            <LoaderButton variant="contained" color="primary" type="submit">
+            <TextField
+              type="email"
+              className={this.props.classes.email}
+              label="Sending Email Account"
+              required
+              name="sendingEmailAccount"
+              onChange={this.onChange}
+              value={this.state.sendingEmailAccount}
+            />
+            <TextField
+              className={this.props.classes.email}
+              label="Sending Email Password"
+              required
+              name="sendingEmailPassword"
+              onChange={this.onChange}
+              value={this.state.sendingEmailPassword}
+            />
+            <LoaderButton
+              isFetching={this.props.isFetching}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
               SAVE
             </LoaderButton>
           </form>
@@ -77,7 +97,7 @@ const styles = {
     alignItems: "center"
   },
   email: {
-    width: "200px"
+    width: "250px"
   },
   card: {
     minWidth: "300px",

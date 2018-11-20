@@ -25,7 +25,7 @@ LoaderButton.propTypes = {
 };
 
 LoaderButton.defaultProps = {
-  isFetching: true,
+  isFetching: false,
   circleSize: 30
 };
 const styles = {
