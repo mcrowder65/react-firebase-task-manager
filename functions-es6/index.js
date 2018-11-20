@@ -92,8 +92,8 @@ exports.helloWorld = functions.https.onRequest(async (req, reply) => {
     await Promise.all(
       Object.values(remindersToSend).map(async reminder => {
         await sendReminder({
-          senderEmail: "matt.taskmanager@gmail.com",
-          senderPassword: "mattcrowder123",
+          senderEmail: reminder.sendingEmailAccount,
+          senderPassword: reminder.sendingEmailPassword,
           subject: reminder.subject,
           emailBody: reminder.body,
           receiverEmail: reminder.receivingEmailAccount
