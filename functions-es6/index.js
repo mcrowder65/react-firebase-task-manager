@@ -1,5 +1,7 @@
 const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
+const { format, isAfter } = require("date-fns");
+const admin = require("firebase-admin");
 
 const sendReminder = reminder => {
   return new Promise(async (resolve, reject) => {
@@ -39,12 +41,53 @@ const sendReminder = reminder => {
   }
 };
 
-exports.helloWorld = functions.https.onRequest(async () => {
-  await sendReminder({
-    senderEmail: "matt.taskmanager@gmail.com",
-    senderPassword: "mattcrowder123",
-    subject: "Google cloud!",
-    emailBody: "Sent from a cloud function",
-    receiverEmail: "mcrowder65@gmail.com"
+// Fetch the service account key JSON file contents
+const serviceAccount = require("./private-key.json");
+
+// Initialize the app with a service account, granting admin privileges
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://task-manager-82de4.firebaseio.com"
+});
+
+const getRemindersToSend = async () => {
+  const db = admin.database();
+
+  const ref = db.ref("reminders");
+  const snapshot = await ref.once("value");
+  const data = snapshot.val();
+  const userIds = Object.keys(data);
+  const reminders = await Promise.all(
+    userIds.map(async userId => {
+      const r = db
+        .ref(`reminders/${userId}`)
+        .orderByChild("dateToSend")
+        .equalTo(format(new Date(), "YYYY-MM-DD"));
+      const s = await r.once("value");
+      return Object.values(s.val());
+    })
+  );
+  const reducedReminders = reminders.reduce((accum, val) => {
+    return [...accum, ...val];
+  }, []);
+  return reducedReminders.filter(r => {
+    return isAfter(
+      new Date(),
+      format(`${r.dateToSend} ${r.timeToSendReminder}`)
+    );
   });
+};
+exports.helloWorld = functions.https.onRequest(async () => {
+  const remindersToSend = await getRemindersToSend();
+  await Promise.all(
+    remindersToSend.map(async reminder => {
+      await sendReminder({
+        senderEmail: "matt.taskmanager@gmail.com",
+        senderPassword: "mattcrowder123",
+        subject: reminder.subject,
+        emailBody: reminder.body,
+        receiverEmail: reminder.receivingEmailAccount
+      });
+    })
+  );
 });

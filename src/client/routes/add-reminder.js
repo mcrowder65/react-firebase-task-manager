@@ -8,7 +8,7 @@ import "@firebase/database";
 
 import LoaderCard from "../components/reusable/loader-card";
 import { compose, getFormattedDate } from "../utils";
-import { addReminder, getUserRemindersByDay } from "../models/reminder-model";
+import { addReminder } from "../models/reminder-model";
 import Reminder from "../components/reminder";
 import { getUser } from "../models/user-model";
 
