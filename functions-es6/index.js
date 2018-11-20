@@ -2,6 +2,7 @@ const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
 const { format, isAfter } = require("date-fns");
 const admin = require("firebase-admin");
+require("babel-polyfill");
 
 const sendReminder = reminder => {
   return new Promise(async (resolve, reject) => {
@@ -77,17 +78,22 @@ const getRemindersToSend = async () => {
     );
   });
 };
-exports.helloWorld = functions.https.onRequest(async () => {
-  const remindersToSend = await getRemindersToSend();
-  await Promise.all(
-    remindersToSend.map(async reminder => {
-      await sendReminder({
-        senderEmail: "matt.taskmanager@gmail.com",
-        senderPassword: "mattcrowder123",
-        subject: reminder.subject,
-        emailBody: reminder.body,
-        receiverEmail: reminder.receivingEmailAccount
-      });
-    })
-  );
+exports.helloWorld = functions.https.onRequest(async (req, reply) => {
+  if (req.body.token === "my-password") {
+    const remindersToSend = await getRemindersToSend();
+    await Promise.all(
+      remindersToSend.map(async reminder => {
+        await sendReminder({
+          senderEmail: "matt.taskmanager@gmail.com",
+          senderPassword: "mattcrowder123",
+          subject: reminder.subject,
+          emailBody: reminder.body,
+          receiverEmail: reminder.receivingEmailAccount
+        });
+      })
+    );
+    reply("success!");
+  } else {
+    reply("you are not allowed access");
+  }
 });
