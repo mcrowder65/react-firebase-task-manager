@@ -45,11 +45,9 @@ class AddReminder extends React.Component {
   };
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevState.dateToSend, this.state.dateToSend)) {
-      // this.getReminders();
       this.setupRef();
     }
   }
-
   handleKey = ({ key }) => {
     if (this.state.isFocused === 0) {
       if (key === "ArrowLeft") {
@@ -71,7 +69,6 @@ class AddReminder extends React.Component {
       .orderByChild("dateToSend")
       .equalTo(getFormattedDate(this.state.dateToSend));
     remindersRef.on("value", snapshot => {
-      console.log("snapshot.val() ", snapshot.val());
       this.setState({ reminders: snapshot.val() || {} });
     });
   };
@@ -94,7 +91,6 @@ class AddReminder extends React.Component {
     });
   };
   render() {
-    console.log(this.state.reminders);
     return (
       <div className={this.props.classes.centered}>
         <LoaderCard

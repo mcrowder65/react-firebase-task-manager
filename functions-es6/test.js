@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const { format, isAfter } = require("date-fns");
+const { format, isAfter, getTime } = require("date-fns");
 
 // Fetch the service account key JSON file contents
 const serviceAccount = require("./private-key.json");
@@ -21,8 +21,8 @@ const main = async () => {
     userIds.map(async userId => {
       const r = db
         .ref(`reminders/${userId}`)
-        .orderByChild("dateToSend")
-        .equalTo(format(new Date(), "YYYY-MM-DD"));
+        .orderByChild("millisecondsToSend")
+        .endAt(getTime(format(new Date())));
       const s = await r.once("value");
       return Object.values(s.val());
     })
@@ -30,12 +30,10 @@ const main = async () => {
   const reducedReminders = reminders.reduce((accum, val) => {
     return accum.concat(val);
   }, []);
-  return reducedReminders.filter(r => {
-    return isAfter(
-      new Date(),
-      format(`${r.dateToSend} ${r.timeToSendReminder}`)
-    );
+  const vals = reducedReminders.filter(r => {
+    return isAfter(new Date(), r.millisecondsToSend);
   });
+  return vals;
 };
 
 main();

@@ -1,5 +1,6 @@
 import firebase from "@firebase/app";
 import "@firebase/database";
+import { format, getTime } from "date-fns";
 
 import { addToTable } from "../services/firebase-service";
 import { getUser } from "./user-model";
@@ -10,8 +11,16 @@ export const addReminder = async previousMetadata => {
   const metadata = {
     ...previousMetadata,
     uid: currentUser.uid,
-    dateToSend: getFormattedDate(previousMetadata.dateToSend)
+    dateToSend: getFormattedDate(previousMetadata.dateToSend),
+    millisecondsToSend: getTime(
+      format(
+        `${getFormattedDate(previousMetadata.dateToSend)} ${
+          previousMetadata.timeToSendReminder
+        }`
+      )
+    )
   };
+  console.log(metadata);
   return addToTable(`reminders/${currentUser.uid}`, metadata, currentUser.qa);
 };
 
