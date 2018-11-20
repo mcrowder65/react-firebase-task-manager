@@ -105,7 +105,7 @@ exports.helloWorld = functions.https.onRequest(async (req, reply) => {
     reply.send(
       `you are not allowed access ${JSON.stringify(req.body)} req.body.token: ${
         req.body.token
-      }`
+      } ${JSON.stringify(req.params)} ${JSON.stringify(req.query)}`
     );
   }
 });
