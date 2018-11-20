@@ -9,10 +9,11 @@ const withLoadable = loader =>
     loader,
     loading: Loading
   });
-export const Login = withLoadable(() => import("./components/login"));
-export const Home = withLoadable(() => import("./components/home"));
-export const Signup = withLoadable(() => import("./components/signup"));
-export const Profile = withLoadable(() => import("./components/profile"));
+
+export const Login = withLoadable(() => import("./routes/login"));
+export const Home = withLoadable(() => import("./routes/home"));
+export const Signup = withLoadable(() => import("./routes/signup"));
+export const Profile = withLoadable(() => import("./routes/profile"));
 export const AddReminder = withLoadable(() =>
-  import("./components/add-reminder")
+  import("./routes/add-reminder")
 );

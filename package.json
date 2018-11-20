@@ -6,13 +6,15 @@
   "dependencies": {
     "@firebase/app": "0.3.3",
     "@firebase/auth": "0.7.2",
-    "@material-ui/core": "1.5.0",
-    "@material-ui/icons": "2.0.2",
+    "@material-ui/core": "3.2.0",
+    "@material-ui/icons": "3.0.1",
     "babel-runtime": "6.26.0",
     "body-parser": "1.18.3",
+    "date-fns": "1.29.0",
     "express": "4.16.3",
     "history": "4.7.2",
     "html-webpack-plugin": "3.2.0",
+    "isomorphic-fetch": "2.2.1",
     "node-sass": "4.9.0",
     "prop-types": "15.6.1",
     "react": "16.4.1",
@@ -75,9 +77,14 @@
   },
   "bundlesize": [
     {
-      "path": "./build/*.bundle.js",
+      "path": "./build/main.bundle.js",
       "compression": "gzip",
-      "maxSize": "150 kB"
+      "maxSize": "175 kB"
+    },
+    {
+      "path": "./build/!(main)*.bundle.js",
+      "compression": "gzip",
+      "maxSize": "30 kB"
     }
   ],
   "scripts": {

@@ -2,21 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Card, LinearProgress } from "@material-ui/core";
 
-import { StateProps } from "../state-utils";
-
 class LoaderCard extends React.Component {
   static propTypes = {
-    children: PropTypes.any.isRequired
+    children: PropTypes.node.isRequired,
+    isFetching: PropTypes.bool.isRequired
   };
 
   render() {
+    const { isFetching, children, ...props } = this.props;
     return (
-      <div>
-        <StateProps>
-          {context => (context.isFetching ? <LinearProgress /> : null)}
-        </StateProps>
-        <Card {...this.props}>{this.props.children}</Card>
-      </div>
+      <Card {...props}>
+        {isFetching ? <LinearProgress /> : null}
+        {children}
+      </Card>
     );
   }
 }
