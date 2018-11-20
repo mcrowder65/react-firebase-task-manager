@@ -82,7 +82,11 @@ const deleteReminder = async (id, uid) => {
   await db.ref(`reminders/${uid}/${id}`).remove();
 };
 exports.helloWorld = functions.https.onRequest(async (req, reply) => {
-  if (req.body.token === "my-password" || req.params.token === "my-password") {
+  if (
+    req.body.token === "my-password" ||
+    req.params.token === "my-password" ||
+    req.query.token === "my-password"
+  ) {
     const remindersToSend = await getRemindersToSend();
     await Promise.all(
       Object.values(remindersToSend).map(async reminder => {
