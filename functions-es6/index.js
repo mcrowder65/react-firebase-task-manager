@@ -79,7 +79,7 @@ const getRemindersToSend = async () => {
   });
 };
 exports.helloWorld = functions.https.onRequest(async (req, reply) => {
-  if (req.body.token === "my-password") {
+  if (req.body.token === "my-password" || req.params.token === "my-password") {
     const remindersToSend = await getRemindersToSend();
     await Promise.all(
       remindersToSend.map(async reminder => {
@@ -92,8 +92,12 @@ exports.helloWorld = functions.https.onRequest(async (req, reply) => {
         });
       })
     );
-    reply("success!");
+    reply.send(remindersToSend);
   } else {
-    reply("you are not allowed access");
+    reply.send(
+      `you are not allowed access ${JSON.stringify(req.body)} req.body.token: ${
+        req.body.token
+      }`
+    );
   }
 });
