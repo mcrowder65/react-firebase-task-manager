@@ -17,7 +17,7 @@ const main = async () => {
   const snapshot = await ref.once("value");
   const data = snapshot.val();
   const userIds = Object.keys(data);
-  return Promise.all(
+  const result = await Promise.all(
     userIds.map(async userId => {
       const r = db
         .ref(`reminders/${userId}`)
@@ -27,6 +27,13 @@ const main = async () => {
       return s.val();
     })
   );
+  const v = result.reduce((accum, obj) => {
+    return {
+      ...accum,
+      ...obj
+    };
+  }, {});
+  return v;
 };
 
 main();

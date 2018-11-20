@@ -53,11 +53,12 @@ admin.initializeApp({
 
 const getRemindersToSend = async () => {
   const db = admin.database();
+
   const ref = db.ref("reminders");
   const snapshot = await ref.once("value");
   const data = snapshot.val();
   const userIds = Object.keys(data);
-  return Promise.all(
+  const result = await Promise.all(
     userIds.map(async userId => {
       const r = db
         .ref(`reminders/${userId}`)
@@ -67,6 +68,13 @@ const getRemindersToSend = async () => {
       return s.val();
     })
   );
+  const v = result.reduce((accum, obj) => {
+    return {
+      ...accum,
+      ...obj
+    };
+  }, {});
+  return v;
 };
 
 const deleteReminder = async (id, uid) => {
