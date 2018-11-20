@@ -20,7 +20,6 @@ export const addReminder = async previousMetadata => {
       )
     )
   };
-  console.log(metadata);
   return addToTable(`reminders/${currentUser.uid}`, metadata, currentUser.qa);
 };
 

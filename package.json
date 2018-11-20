@@ -119,6 +119,7 @@
     "modulePaths": [
       "src/client/"
     ],
+    "roots": ["src"],
     "coverageReporters": [
       "lcov"
     ]
