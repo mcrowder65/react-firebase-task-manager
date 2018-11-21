@@ -1,7 +1,8 @@
 const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
-const { format, isAfter, getTime } = require("date-fns");
+const { format, getTime } = require("date-fns");
 const admin = require("firebase-admin");
+const cors = require("cors")({ origin: true });
 require("babel-polyfill");
 
 const sendReminder = reminder => {
@@ -82,6 +83,32 @@ const deleteReminder = async (id, uid) => {
   const db = admin.database();
   await db.ref(`reminders/${uid}/${id}`).remove();
 };
+exports.sendReminderImmediately = functions.https.onRequest((req, reply) => {
+  cors(req, reply, async () => {
+    try {
+      const user = await admin.auth().verifyIdToken(req.query.auth);
+      const db = admin.database();
+      console.log("req.body.reminderId ", req.body.reminderId);
+      const ref = db.ref(`reminders/${user.uid}/${req.body.reminderId}`);
+      const snapshot = await ref.once("value");
+
+      const reminder = snapshot.val() || {};
+      const sender = sendReminder({
+        senderEmail: reminder.sendingEmailAccount,
+        senderPassword: reminder.sendingEmailPassword,
+        subject: reminder.subject,
+        emailBody: reminder.body,
+        receiverEmail: reminder.receivingEmailAccount
+      });
+      const deleter = deleteReminder(req.body.reminderId, user.uid);
+      await Promise.all([sender, deleter]);
+      reply.status(200).send("success!");
+    } catch (e) {
+      console.log(e.message);
+      reply.status(500).send(`You are not authorized`);
+    }
+  });
+});
 exports.helloWorld = functions.https.onRequest(async (req, reply) => {
   if (
     req.body.token === "my-password" ||

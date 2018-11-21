@@ -89,18 +89,19 @@
     }
   ],
   "scripts": {
-    "start": "export NODE_ENV=development && ./node_modules/.bin/webpack-dev-server",
+    "start": "export API_URL=http://localhost:5001/task-manager-82de4/us-central1/sendReminderImmediately && NODE_ENV=development webpack-dev-server",
     "pr-check": "npm test && npm run webpack && npm run bundlesize",
     "pr-verify": "npm test && npm run webpack && npm run bundlesize",
     "test": "npm run linter && npm run jest",
     "jest": "./node_modules/.bin/jest --coverage",
     "linter": "./node_modules/.bin/eslint src --ext .js,.jsx && ./node_modules/.bin/eslint test --ext .js,.jsx",
-    "webpack": "export NODE_ENV=production && ./node_modules/.bin/webpack -p --progress",
+    "webpack": "export NODE_ENV=production webpack --config config/production.js -p --progress",
     "bundlesize": "bundlesize",
     "analyze-bundle": "export ANALYZE_BUNDLE=true && npm run webpack",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "build-functions": "rm -rf functions && cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js ",
     "deploy": "rm -rf build && npm run webpack && firebase deploy",
-    "deploy-functions": "rm -rf build && npm run webpack && rm -rf functions && cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js && firebase deploy && rm -rf functions/"
+    "deploy-functions": "rm -rf build && npm run webpack && npm run build-functions && firebase deploy && rm -rf functions/"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test/config.js",
@@ -119,7 +120,9 @@
     "modulePaths": [
       "src/client/"
     ],
-    "roots": ["src"],
+    "roots": [
+      "src"
+    ],
     "coverageReporters": [
       "lcov"
     ]

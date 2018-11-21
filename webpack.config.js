@@ -153,7 +153,7 @@ webpackConfig.plugins = [
       minifyURLs: true
     }
   }),
-  new webpack.EnvironmentPlugin(["NODE_ENV"]),
+  new webpack.EnvironmentPlugin(["NODE_ENV", "API_URL"]),
 
   new webpack.DefinePlugin({
     "process.env.NODE_ENV": "production"
