@@ -112,6 +112,7 @@ class AddReminder extends React.Component {
 
   getReminders = () => {
     const reminders = Object.entries(this.state.reminders);
+    // eslint-disable-next-line no-unused-vars
     reminders.sort(([keyA, a], [keyB, b]) => {
       if (a.millisecondsToSend > b.millisecondsToSend) {
         return 1;

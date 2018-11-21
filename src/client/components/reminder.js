@@ -10,15 +10,23 @@ import { WithApiCall } from "./state-utils";
 import { deleteReminder } from "../models/reminder-model";
 
 function Reminder(props) {
+  const {
+    id,
+    classes,
+    receivingEmailAccount,
+    subject,
+    body,
+    dateToSend
+  } = props;
   return (
-    <Card className={props.classes.card}>
-      <Typography>{props.receivingEmailAccount}</Typography>
-      <Typography>{props.subject}</Typography>
-      <Typography>{props.body}</Typography>
+    <Card className={classes.card}>
+      <Typography>{receivingEmailAccount}</Typography>
+      <Typography>{subject}</Typography>
+      <Typography>{body}</Typography>
       <Typography>
-        {format(props.dateToSend, "MM/DD")} {props.timeToSendReminder}
+        {format(dateToSend, "MM/DD")} {props.timeToSendReminder}
       </Typography>
-      <div className={props.classes.buttons}>
+      <div className={classes.buttons}>
         <WithApiCall>
           {({ isFetching, apiCall }) => {
             return (
@@ -29,7 +37,7 @@ function Reminder(props) {
                 color="primary"
                 onClick={async () => {
                   await apiCall(async () => {
-                    await deleteReminder(props.id);
+                    await deleteReminder(id);
                   });
                 }}
               >
