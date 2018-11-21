@@ -26,7 +26,7 @@ class AddReminder extends React.Component {
   state = {
     receivingEmailAccount: "",
     dateToSend: new Date(),
-    timeToSendReminder: "11:25",
+    timeToSendReminder: "23:59",
     subject: "hello world!",
     body: "",
     isFocused: 0,
@@ -111,8 +111,8 @@ class AddReminder extends React.Component {
   };
 
   getReminders = () => {
-    const reminders = Object.values(this.state.reminders);
-    reminders.sort((a, b) => {
+    const reminders = Object.entries(this.state.reminders);
+    reminders.sort(([keyA, a], [keyB, b]) => {
       if (a.millisecondsToSend > b.millisecondsToSend) {
         return 1;
       } else if (a.millisecondsToSend < b.millisecondsToSend) {
@@ -126,10 +126,7 @@ class AddReminder extends React.Component {
   render() {
     return (
       <div className={this.props.classes.centered}>
-        <Card
-          isFetching={this.props.isFetching}
-          className={this.props.classes.card}
-        >
+        <Card className={this.props.classes.card}>
           <form className={this.props.classes.content} onSubmit={this.onSubmit}>
             <Typography variant="h6">Reminder content</Typography>
             <TextField
@@ -211,9 +208,10 @@ class AddReminder extends React.Component {
           </form>
         </Card>
         <div className={this.props.classes.reminders}>
-          {this.getReminders().map((reminder, index) => {
+          {this.getReminders().map(([id, reminder], index) => {
             return (
               <Reminder
+                id={id}
                 key={index}
                 dateToSend={reminder.dateToSend}
                 receivingEmailAccount={reminder.receivingEmailAccount}

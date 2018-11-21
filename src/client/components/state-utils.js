@@ -119,3 +119,37 @@ export const withApiCall = YourComponent => {
     }
   };
 };
+export class WithApiCall extends React.Component {
+  static propTypes = {
+    children: PropTypes.any.isRequired
+  };
+  state = {
+    isFetching: false
+  };
+  apiCall = async yourApiCall => {
+    try {
+      this.setState({ isFetching: true });
+      const result = await yourApiCall();
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      if (this._isMounted) {
+        this.setState({ isFetching: false });
+      }
+    }
+  };
+  componentDidMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+  render() {
+    return this.props.children({
+      ...this.props,
+      isFetching: this.state.isFetching,
+      apiCall: this.apiCall
+    });
+  }
+}

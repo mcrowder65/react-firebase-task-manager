@@ -2,7 +2,7 @@ import firebase from "@firebase/app";
 import "@firebase/database";
 import { format, getTime } from "date-fns";
 
-import { addToTable } from "../services/firebase-service";
+import { addToTable, deleteRecord } from "../services/firebase-service";
 import { getUser } from "./user-model";
 import { getFormattedDate } from "../utils";
 
@@ -33,4 +33,12 @@ export const getUserRemindersByDay = async () => {
     .equalTo(currentUser.uid)
     .once("value");
   return snapshot.val();
+};
+
+export const deleteReminder = async reminderId => {
+  const currentUser = await getUser();
+  return deleteRecord(
+    `reminders/${currentUser.uid}/${reminderId}`,
+    currentUser.qa
+  );
 };

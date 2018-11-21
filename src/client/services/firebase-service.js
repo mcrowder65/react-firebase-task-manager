@@ -33,6 +33,11 @@ export const addToTable = (tableName, bodyWithoutTimestamp, authToken) => {
   });
 };
 
+export const deleteRecord = (recordPath, authToken) => {
+  return fetcher(`${firebaseUrl}/${recordPath}.json?auth=${authToken}`, {
+    method: "DELETE"
+  });
+};
 export const setTable = (tableName, bodyWithoutTimestamp, authToken) => {
   const body = {
     ...bodyWithoutTimestamp,
