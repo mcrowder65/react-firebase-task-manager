@@ -95,10 +95,11 @@
     "test": "npm run linter && npm run jest",
     "jest": "./node_modules/.bin/jest --coverage",
     "linter": "./node_modules/.bin/eslint src --ext .js,.jsx && ./node_modules/.bin/eslint test --ext .js,.jsx",
-    "webpack": "export NODE_ENV=production webpack --config config/production.js -p --progress",
+    "webpack": "NODE_ENV=production webpack -p --progress",
     "bundlesize": "bundlesize",
     "analyze-bundle": "export ANALYZE_BUNDLE=true && npm run webpack",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "local-functions": "npm run build-functions && firebase serve",
     "build-functions": "rm -rf functions && cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js ",
     "deploy": "rm -rf build && npm run webpack && firebase deploy",
     "deploy-functions": "rm -rf build && npm run webpack && npm run build-functions && firebase deploy && rm -rf functions/"
