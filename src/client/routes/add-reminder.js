@@ -27,7 +27,7 @@ class AddReminder extends React.Component {
     receivingEmailAccount: "",
     dateToSend: new Date(),
     timeToSendReminder: "23:59",
-    subject: "hello world!",
+    subject: "",
     body: "",
     isFocused: 0,
     reminders: {}

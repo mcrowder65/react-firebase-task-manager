@@ -5,6 +5,7 @@ import { format, getTime } from "date-fns";
 import { addToTable, deleteRecord } from "../services/firebase-service";
 import { getUser } from "./user-model";
 import { getFormattedDate } from "../utils";
+import { fetcher } from "../fetcher";
 
 export const addReminder = async previousMetadata => {
   const currentUser = await getUser();
@@ -41,4 +42,15 @@ export const deleteReminder = async reminderId => {
     `reminders/${currentUser.uid}/${reminderId}`,
     currentUser.qa
   );
+};
+
+export const sendReminderImmediately = async reminderId => {
+  const currentUser = await getUser();
+  return fetcher(`${process.env.API_URL}?auth=${currentUser.qa}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ reminderId })
+  });
 };

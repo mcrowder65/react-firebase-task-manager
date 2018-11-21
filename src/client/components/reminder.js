@@ -7,7 +7,10 @@ import { format } from "date-fns";
 import { compose } from "../utils";
 import LoaderButton from "./reusable/loader-button";
 import { WithApiCall } from "./state-utils";
-import { deleteReminder } from "../models/reminder-model";
+import {
+  deleteReminder,
+  sendReminderImmediately
+} from "../models/reminder-model";
 
 function Reminder(props) {
   const {
@@ -61,13 +64,18 @@ function Reminder(props) {
           }}
         </WithApiCall>
         <WithApiCall>
-          {({ isFetching }) => {
+          {({ isFetching, apiCall }) => {
             return (
               <LoaderButton
                 size="small"
                 isFetching={isFetching}
                 variant="contained"
                 color="primary"
+                onClick={async () => {
+                  await apiCall(async () => {
+                    await sendReminderImmediately(id);
+                  });
+                }}
               >
                 Send Now
               </LoaderButton>
