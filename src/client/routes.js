@@ -10,10 +10,10 @@ const withLoadable = loader =>
     loading: Loading
   });
 
-export const Login = withLoadable(() => import("./routes/login"));
-export const Home = withLoadable(() => import("./routes/home"));
-export const Signup = withLoadable(() => import("./routes/signup"));
-export const Profile = withLoadable(() => import("./routes/profile"));
+export const Login = withLoadable(() => import("./pages/login"));
+export const Home = withLoadable(() => import("./pages/home"));
+export const Signup = withLoadable(() => import("./pages/signup"));
+export const Profile = withLoadable(() => import("./pages/profile"));
 export const AddReminder = withLoadable(() =>
-  import("./routes/add-reminder")
+  import("./pages/add-reminder")
 );
