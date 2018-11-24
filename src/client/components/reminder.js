@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { format } from "date-fns";
 
 import { compose } from "../utils";
-import LoaderButton from "./reusable/loader-button";
+import LoaderButton from "./loader-button";
 import { WithApiCall } from "./state-utils";
 import {
   deleteReminder,

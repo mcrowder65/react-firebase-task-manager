@@ -10,8 +10,9 @@ import { compose, getFormattedDate } from "../utils";
 import { addReminder } from "../models/reminder-model";
 import Reminder from "../components/reminder";
 import { getUser, getUserMetadata } from "../models/user-model";
-import LoaderButton from "../components/reusable/loader-button";
+import LoaderButton from "../components/loader-button";
 import { withApiCall } from "../components/state-utils";
+import Reminders from "../components/reminders";
 
 class AddReminder extends React.Component {
   static propTypes = {
@@ -209,19 +210,7 @@ class AddReminder extends React.Component {
           </form>
         </Card>
         <div className={this.props.classes.reminders}>
-          {this.getReminders().map(([id, reminder], index) => {
-            return (
-              <Reminder
-                id={id}
-                key={index}
-                dateToSend={reminder.dateToSend}
-                receivingEmailAccount={reminder.receivingEmailAccount}
-                timeToSendReminder={reminder.timeToSendReminder}
-                subject={reminder.subject}
-                body={reminder.body}
-              />
-            );
-          })}
+          <Reminders reminders={this.getReminders()} />
         </div>
       </div>
     );
