@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Card } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { addDays, isEqual } from "date-fns";
+import { isEqual } from "date-fns";
 import firebase from "@firebase/app";
 import "@firebase/database";
 
@@ -26,18 +26,11 @@ class AddReminder extends React.Component {
   state = {
     receivingEmailAccount: "",
     dateToSend: new Date(),
-    timeToSendReminder: "23:59",
+    timeToSendReminder: "",
     subject: "",
     body: "",
     isFocused: 0,
-    reminders: {
-      Hello: {
-        dateToSend: "11/23/2018",
-        receivingEmailAccount: "mcrowder65@gmail.com",
-        timeToSendReminder: "14:00",
-        subject: "this is a subject"
-      }
-    }
+    reminders: {}
   };
 
   onSubmit = async e => {
@@ -144,7 +137,7 @@ const styles = {
   },
   card: {
     height: "65vh",
-    width: "50%",
+    minWidth: "300px",
     minHeight: "400px"
   }
 };

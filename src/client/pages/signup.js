@@ -13,7 +13,6 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from "../utils";
 import { StateProps } from "../components/state-utils";
-import LoaderCard from "../components/loader-card";
 import { browserHistory } from "../browser-history";
 import { routes } from "../constants";
 import { signup } from "../services/firebase-service";

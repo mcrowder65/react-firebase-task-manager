@@ -1,25 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
-import {Modal} from '@material-ui/core';
+import { Modal } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-
 import { compose } from "../utils";
-import { WithApiCall } from "../components/state-utils";
 
 class EditReminder extends React.Component {
-  static propTypes = {
-  
-  }
-  componentDidMount() {
-  
-  }
+  static propTypes = {};
+  componentDidMount() {}
   render() {
-    return (
-      <Modal open={true}>
-      
-      </Modal>
-    )
+    return <Modal open={true} />;
   }
 }
 
