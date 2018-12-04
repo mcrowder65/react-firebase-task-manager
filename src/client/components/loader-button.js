@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button, CircularProgress } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-import { compose } from "../../utils";
+import { compose } from "../utils";
 
 function LoaderButton(props) {
   const { children, isFetching, classes, circleSize, ...otherProps } = props;

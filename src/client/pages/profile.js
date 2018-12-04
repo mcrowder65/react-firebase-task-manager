@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { getUserMetadata, setUser } from "../models/user-model";
 import { compose } from "../utils";
 import { withApiCall } from "../components/state-utils";
-import LoaderButton from "../components/reusable/loader-button";
+import LoaderButton from "../components/loader-button";
 
 class Profile extends React.Component {
   static propTypes = {

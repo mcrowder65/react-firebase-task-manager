@@ -54,7 +54,6 @@ class Login extends React.Component {
       alert(error.message);
     }
   };
-
   render() {
     const { classes } = this.props;
     return (
