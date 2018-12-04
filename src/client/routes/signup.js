@@ -5,13 +5,14 @@ import {
   Input,
   InputLabel,
   Button,
-  Typography
+  Grid,
+  Typography,
+  Card
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { compose } from "../utils";
 import { StateProps } from "../components/state-utils";
-import LoaderCard from "../components/reusable/loader-card";
 import { browserHistory } from "../browser-history";
 import { routes } from "../constants";
 import { signup } from "../services/firebase-service";
@@ -57,55 +58,63 @@ class Login extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.content}>
-        <LoaderCard className={classes.card}>
+        <Card className={classes.card}>
           <StateProps>
             {context => {
               return (
-                <React.Fragment>
-                  <Typography variant="headline">Sign up</Typography>
+                <Grid>
+                  <Typography variant="h4">Sign up</Typography>
                   <form className={classes.content}>
-                    <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="email">Email Address</InputLabel>
-                      <Input
-                        id="email"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        value={this.state.email}
-                        onChange={this.onChange}
-                      />
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="password">Password</InputLabel>
-                      <Input
-                        name="password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        value={this.state.password}
-                        onChange={this.onChange}
-                      />
-                    </FormControl>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="raised"
-                      color="primary"
-                      className={classes.submit}
-                      onClick={e =>
-                        context.networkRequest(() =>
-                          this.onSubmit(e, context.refreshCurrentUser)
-                        )
-                      }
-                    >
-                      Sign in
-                    </Button>
+                    <Grid container alignItems="center" direction="column">
+                      <Grid item>
+                        <FormControl margin="normal" required fullWidth>
+                          <InputLabel htmlFor="email">Email Address</InputLabel>
+                          <Input
+                            id="email"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            value={this.state.email}
+                            onChange={this.onChange}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item>
+                        <FormControl margin="normal" required fullWidth>
+                          <InputLabel htmlFor="password">Password</InputLabel>
+                          <Input
+                            name="password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            value={this.state.password}
+                            onChange={this.onChange}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          onClick={e =>
+                            context.networkRequest(() =>
+                              this.onSubmit(e, context.refreshCurrentUser)
+                            )
+                          }
+                        >
+                          Sign in
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </form>
-                </React.Fragment>
+                </Grid>
               );
             }}
           </StateProps>
-        </LoaderCard>
+        </Card>
       </div>
     );
   }
