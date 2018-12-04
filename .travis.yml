@@ -4,5 +4,6 @@ script:
 - npm run linter;
 - npm run jest;
 - npm run webpack;
+- npm run build-functions;
 - npm run bundlesize;
 - npm run coveralls;

@@ -5,7 +5,9 @@ import {
   Input,
   InputLabel,
   Button,
-  Typography
+  Typography,
+  Card,
+  Grid
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -23,10 +25,11 @@ const styles = {
     alignItems: "center"
   },
   card: {
-    width: 300,
+    width: 450,
     padding: 20
   }
 };
+
 class Login extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired
@@ -46,7 +49,7 @@ class Login extends React.Component {
     try {
       await login(email, password);
       refreshCurrentUser();
-      browserHistory.push(routes.HOME);
+      browserHistory.push(routes.ADD_REMINDER);
     } catch (error) {
       // TODO move to modal
       alert(error.message);
@@ -56,55 +59,64 @@ class Login extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.content}>
-        <LoaderCard className={classes.card}>
+        <Card className={classes.card}>
           <StateProps>
             {context => {
               return (
-                <React.Fragment>
-                  <Typography variant="headline">Login</Typography>
+                <div>
+                  <Typography variant="h4">Login</Typography>
+
                   <form className={classes.content}>
-                    <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="email">Email Address</InputLabel>
-                      <Input
-                        id="email"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        value={this.state.email}
-                        onChange={this.onChange}
-                      />
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="password">Password</InputLabel>
-                      <Input
-                        name="password"
-                        type="password"
-                        id="password"
-                        value={this.state.password}
-                        onChange={this.onChange}
-                        autoComplete="current-password"
-                      />
-                    </FormControl>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="raised"
-                      color="primary"
-                      className={classes.submit}
-                      onClick={e =>
-                        context.networkRequest(() =>
-                          this.login(e, context.refreshCurrentUser)
-                        )
-                      }
-                    >
-                      Sign in
-                    </Button>
+                    <Grid container alignItems="center" direction="column">
+                      <Grid item>
+                        <FormControl margin="normal" required fullWidth>
+                          <InputLabel htmlFor="email">Email Address</InputLabel>
+                          <Input
+                            id="email"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            value={this.state.email}
+                            onChange={this.onChange}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item>
+                        <FormControl margin="normal" required fullWidth>
+                          <InputLabel htmlFor="password">Password</InputLabel>
+                          <Input
+                            name="password"
+                            type="password"
+                            id="password"
+                            value={this.state.password}
+                            onChange={this.onChange}
+                            autoComplete="current-password"
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          onClick={e =>
+                            context.networkRequest(() =>
+                              this.login(e, context.refreshCurrentUser)
+                            )
+                          }
+                        >
+                          Sign in
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </form>
-                </React.Fragment>
+                </div>
               );
             }}
           </StateProps>
-        </LoaderCard>
+        </Card>
       </div>
     );
   }
