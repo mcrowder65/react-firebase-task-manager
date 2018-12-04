@@ -104,7 +104,7 @@
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "local-functions": "npm run build-functions && firebase serve",
     "build-functions": "rm -rf functions && cd functions-es6 && npm run build && cd .. && cp -rf functions-es6 functions && rm functions/index.js && mv functions/build-index.js functions/index.js ",
-    "deploy": "rm -rf build && npm run webpack && firebase deploy",
+    "deploy": "rm -rf functions && rm -rf build && npm run webpack && firebase deploy",
     "deploy-functions": "rm -rf build && npm run webpack && npm run build-functions && firebase deploy && rm -rf functions/"
   },
   "jest": {
