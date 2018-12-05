@@ -19,7 +19,8 @@ function Reminder(props) {
     receivingEmailAccount,
     subject,
     body,
-    dateToSend
+    dateToSend,
+    _onEditClick
   } = props;
   return (
     <Card className={classes.card}>
@@ -57,6 +58,7 @@ function Reminder(props) {
                 isFetching={isFetching}
                 variant="contained"
                 color="primary"
+                onClick={_onEditClick}
               >
                 Edit
               </LoaderButton>
@@ -94,6 +96,7 @@ Reminder.propTypes = {
   timeToSendReminder: PropTypes.string.isRequired,
   subject: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  _onEditClick: PropTypes.func.isRequired,
   body: PropTypes.string
 };
 

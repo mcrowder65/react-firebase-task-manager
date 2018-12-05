@@ -38,15 +38,17 @@ class SetReminder extends React.Component {
     isFocused: 0
   };
   handleKey = ({ key }) => {
+    const changeDate = n => {
+      this.props._onChange({
+        target: { name: "dateToSend", value: addDays(this.props.dateToSend, n) }
+      });
+    };
     if (this.state.isFocused === 0) {
       if (key === this.POSSIBLE_KEYS.ARROW_LEFT) {
         changeDate(-1);
       } else if (key === this.POSSIBLE_KEYS.ARROW_RIGHT) {
         changeDate(1);
       }
-    }
-    function changeDate(n) {
-      this.props._onChange("dateToSend", addDays(this.props.dateToSend, n));
     }
   };
   componentWillUnmount() {
@@ -100,7 +102,7 @@ class SetReminder extends React.Component {
             onChange={this.props._onChange}
             name="dateToSend"
             value={getFormattedDate(this.props.dateToSend)}
-            label="Date to send reminder"
+            label="Date to send"
             type="date"
           />
           <Button
@@ -120,7 +122,7 @@ class SetReminder extends React.Component {
           name="timeToSendReminder"
           className={this.props.classes.timeToSendReminder}
           required
-          label="Time to send reminder"
+          label="Time to send"
           value={this.props.timeToSendReminder}
           onChange={this.props._onChange}
         />
