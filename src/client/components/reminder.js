@@ -88,7 +88,7 @@ function Reminder(props) {
 Reminder.propTypes = {
   classes: PropTypes.object.isRequired,
   receivingEmailAccount: PropTypes.string.isRequired,
-  millisecondsToSend: PropTypes.string.isRequired,
+  millisecondsToSend: PropTypes.number.isRequired,
   subject: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   body: PropTypes.string
