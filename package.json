@@ -67,17 +67,7 @@
   "eslintConfig": {
     "extends": [
       "mcrowder65"
-    ],
-    "rules": {
-      "no-unused-vars": [
-        "error",
-        {
-          "vars": "all",
-          "args": "after-used",
-          "ignoreRestSiblings": true
-        }
-      ]
-    }
+    ]
   },
   "bundlesize": [
     {

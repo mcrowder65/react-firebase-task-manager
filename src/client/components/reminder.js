@@ -18,17 +18,15 @@ function Reminder(props) {
     classes,
     receivingEmailAccount,
     subject,
-    body,
-    dateToSend
+    millisecondsToSend,
+    body
   } = props;
   return (
     <Card className={classes.card}>
       <Typography>{receivingEmailAccount}</Typography>
       <Typography>{subject}</Typography>
       <Typography>{body}</Typography>
-      <Typography>
-        {format(dateToSend, "MM/DD")} {props.timeToSendReminder}
-      </Typography>
+      <Typography>{format(millisecondsToSend, "MM/DD hh:mm A")}</Typography>
       <div className={classes.buttons}>
         <WithApiCall>
           {({ isFetching, apiCall }) => {
@@ -89,9 +87,8 @@ function Reminder(props) {
 
 Reminder.propTypes = {
   classes: PropTypes.object.isRequired,
-  dateToSend: PropTypes.string.isRequired,
   receivingEmailAccount: PropTypes.string.isRequired,
-  timeToSendReminder: PropTypes.string.isRequired,
+  millisecondsToSend: PropTypes.number.isRequired,
   subject: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   body: PropTypes.string

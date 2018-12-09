@@ -11,6 +11,7 @@ function Reminders({ reminders }) {
           <Reminder
             id={id}
             key={index}
+            millisecondsToSend={reminder.millisecondsToSend}
             dateToSend={reminder.dateToSend}
             receivingEmailAccount={reminder.receivingEmailAccount}
             timeToSendReminder={reminder.timeToSendReminder}
