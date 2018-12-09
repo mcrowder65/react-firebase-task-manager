@@ -7,7 +7,6 @@ import { format } from "date-fns";
 import { compose } from "../utils";
 import SetReminder from "../components/set-reminder";
 import { withApiCall } from "../components/state-utils";
-import LoaderCard from "../components/loader-card";
 import { setReminder } from "../models/reminder-model";
 
 class EditReminder extends React.Component {
