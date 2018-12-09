@@ -2,18 +2,25 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Reminder from "./reminder";
+import EditReminder from "../pages/edit-reminder";
 
 class Reminders extends React.Component {
   state = {
-    isEditing: false
+    isEditing: false,
+    currentReminder: {}
   };
-  setIsEditing = isEditing => {
-    this.setState({ isEditing });
+  setIsEditing = (isEditing, currentReminder) => {
+    this.setState({ isEditing, currentReminder });
   };
   render() {
     const { reminders } = this.props;
     return (
       <React.Fragment>
+        <EditReminder
+          isEditing={this.state.isEditing}
+          _setIsEditing={this.setIsEditing}
+          reminder={this.state.currentReminder}
+        />
         {reminders.map(([id, reminder], index) => {
           return (
             <Reminder
@@ -26,8 +33,7 @@ class Reminders extends React.Component {
               subject={reminder.subject}
               body={reminder.body}
               _onEditClick={() => {
-                this.setIsEditing(true);
-                console.log({ [id]: reminder });
+                this.setIsEditing(true, { ...reminder, id });
               }}
             />
           );

@@ -138,7 +138,8 @@ const styles = {
   card: {
     height: "65vh",
     minWidth: "350px",
-    maxHeight: "400px"
+    minHeight: "400px",
+    maxHeight: "600px"
   }
 };
 

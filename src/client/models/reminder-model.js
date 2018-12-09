@@ -2,7 +2,11 @@ import firebase from "@firebase/app";
 import "@firebase/database";
 import { format, getTime } from "date-fns";
 
-import { addToTable, deleteRecord } from "../services/firebase-service";
+import {
+  addToTable,
+  deleteRecord,
+  setTable
+} from "../services/firebase-service";
 import { getUser } from "./user-model";
 import { getFormattedDate } from "../utils";
 import { fetcher } from "../fetcher";
@@ -23,7 +27,25 @@ export const addReminder = async previousMetadata => {
   };
   return addToTable(`reminders/${currentUser.uid}`, metadata, currentUser.qa);
 };
-
+export const setReminder = async previousMetadata => {
+  const currentUser = await getUser();
+  const metadata = {
+    ...previousMetadata,
+    dateToSend: getFormattedDate(previousMetadata.dateToSend),
+    millisecondsToSend: getTime(
+      format(
+        `${getFormattedDate(previousMetadata.dateToSend)} ${
+          previousMetadata.timeToSendReminder
+        }`
+      )
+    )
+  };
+  return setTable(
+    `reminders/${currentUser.uid}/${metadata.id}`,
+    metadata,
+    currentUser.qa
+  );
+};
 export const getUserRemindersByDay = async () => {
   const currentUser = await getUser();
 
