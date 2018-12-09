@@ -20,6 +20,7 @@ class Reminders extends React.Component {
               id={id}
               key={index}
               dateToSend={reminder.dateToSend}
+              millisecondsToSend={reminder.millisecondsToSend}
               receivingEmailAccount={reminder.receivingEmailAccount}
               timeToSendReminder={reminder.timeToSendReminder}
               subject={reminder.subject}
