@@ -8,6 +8,7 @@ import { compose } from "../utils";
 import SetReminder from "../components/set-reminder";
 import { withApiCall } from "../components/state-utils";
 import { setReminder } from "../models/reminder-model";
+import { getUserMetadata } from "../models/user-model";
 
 class EditReminder extends React.Component {
   static propTypes = {
@@ -21,6 +22,7 @@ class EditReminder extends React.Component {
   state = {};
   componentDidUpdate() {
     if (this.state.id !== this.props.reminder.id) {
+      this.getUserMetadata();
       this.setState({
         id: this.props.reminder.id,
         receivingEmailAccount: this.props.reminder.receivingEmailAccount,
@@ -34,10 +36,27 @@ class EditReminder extends React.Component {
       });
     }
   }
+  getUserMetadata = async () => {
+    const {
+      receivingEmailAccount,
+      sendingEmailAccount,
+      sendingEmailPassword
+    } = await getUserMetadata();
+    this.setState({
+      receivingEmailAccount,
+      sendingEmailAccount,
+      sendingEmailPassword
+    });
+  };
   onSubmit = e => {
     e.preventDefault();
     this.props.apiCall(async () => {
-      await setReminder(this.state);
+      await setReminder({
+        ...this.state,
+        receivingEmailAccount: this.state.receivingEmailAccount,
+        sendingEmailPassword: this.state.sendingEmailPassword,
+        sendingEmailAccount: this.state.sendingEmailAccount
+      });
       this.props._setIsEditing(false, {});
     });
   };
