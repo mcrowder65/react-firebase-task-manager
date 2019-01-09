@@ -29,7 +29,7 @@ class EditReminder extends React.Component {
         dateToSend: format(this.props.reminder.millisecondsToSend),
         timeToSendReminder: format(
           this.props.reminder.millisecondsToSend,
-          "hh:mm"
+          "HH:mm"
         ),
         subject: this.props.reminder.subject,
         body: this.props.reminder.body
@@ -86,7 +86,7 @@ class EditReminder extends React.Component {
 const styles = {
   card: {
     width: "300px",
-    minHeight: "400px"
+    minHeight: "500px"
   },
   centered: {
     display: "flex",
