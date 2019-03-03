@@ -1,12 +1,12 @@
 import {
   getTable,
   getUserFromFirebase,
-  setTable
+  setTable,
 } from "../services/firebase-service";
 
 export const getUser = getUserFromFirebase;
 
-export const setUser = async metadata => {
+export const setUser = async (metadata) => {
   const currentUser = await getUser();
 
   return setTable(`users/${currentUser.uid}`, metadata, currentUser.qa);

@@ -14,7 +14,7 @@ class SetReminder extends React.Component {
       receivingEmailAccount: PropTypes.string,
       datePicker: PropTypes.string,
       plusser: PropTypes.string,
-      timeToSendReminder: PropTypes.string
+      timeToSendReminder: PropTypes.string,
     }).isRequired,
     isFetching: PropTypes.bool.isRequired,
     receivingEmailAccount: PropTypes.string.isRequired,
@@ -24,23 +24,26 @@ class SetReminder extends React.Component {
     subject: PropTypes.string.isRequired,
     _onChange: PropTypes.func.isRequired,
     _onSubmit: PropTypes.func.isRequired,
-    body: PropTypes.string
+    body: PropTypes.string,
   };
 
   static defaultProps = {
-    body: ""
+    body: "",
   };
   POSSIBLE_KEYS = {
     ARROW_LEFT: "ArrowLeft",
-    ARROW_RIGHT: "ArrowRight"
+    ARROW_RIGHT: "ArrowRight",
   };
   state = {
-    isFocused: 0
+    isFocused: 0,
   };
   handleKey = ({ key }) => {
-    const changeDate = n => {
+    const changeDate = (n) => {
       this.props._onChange({
-        target: { name: "dateToSend", value: addDays(this.props.dateToSend, n) }
+        target: {
+          name: "dateToSend",
+          value: addDays(this.props.dateToSend, n),
+        },
       });
     };
     if (this.state.isFocused === 0) {
@@ -57,13 +60,14 @@ class SetReminder extends React.Component {
   componentDidMount() {
     window.addEventListener("keydown", this.handleKey);
   }
-  onFocus = num => {
-    this.setState(state => {
+  onFocus = (num) => {
+    this.setState((state) => {
       return {
-        isFocused: num + state.isFocused
+        isFocused: num + state.isFocused,
       };
     });
   };
+
   render() {
     return (
       <form
@@ -79,7 +83,7 @@ class SetReminder extends React.Component {
           className={this.props.classes.receivingEmailAccount}
           required
           label="Receiving email account"
-          value={this.props.receivingEmailAccount}
+          initialValue={this.props.receivingEmailAccount}
         />
         <Typography variant="body1">
           {format(this.props.dateToSend, "dddd")}
@@ -162,26 +166,26 @@ const styles = {
     justifyContent: "space-around",
     display: "flex",
     alignItems: "center",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   receivingEmailAccount: {
-    width: "250px"
+    width: "250px",
   },
   datePicker: {
     width: "250px",
     display: "flex",
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
   },
   plusser: {
     maxWidth: "15px",
     minWidth: "15px",
     maxHeight: "40px",
-    minHeight: "40px"
+    minHeight: "40px",
   },
   timeToSendReminder: {
-    width: "200px"
-  }
+    width: "200px",
+  },
 };
 
 const enhance = compose(withStyles(styles));

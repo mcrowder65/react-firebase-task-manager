@@ -7,25 +7,25 @@ const { Provider, Consumer } = React.createContext();
 
 export class StateProvider extends React.Component {
   static propTypes = {
-    children: PropTypes.element.isRequired
+    children: PropTypes.element.isRequired,
   };
 
   state = {
     fetchCount: 0,
-    currentUser: null
+    currentUser: null,
   };
 
   startFetching = () => {
-    this.setState(state => {
+    this.setState((state) => {
       return {
-        fetchCount: state.fetchCount + 1
+        fetchCount: state.fetchCount + 1,
       };
     });
   };
   stopFetching = () => {
-    this.setState(state => {
+    this.setState((state) => {
       return {
-        fetchCount: state.fetchCount - 1
+        fetchCount: state.fetchCount - 1,
       };
     });
   };
@@ -47,7 +47,7 @@ export class StateProvider extends React.Component {
           startFetching: this.startFetching,
           stopFetching: this.stopFetching,
           refreshCurrentUser: this.refreshCurrentUser,
-          currentUser: this.state.currentUser
+          currentUser: this.state.currentUser,
         }}
       >
         {this.props.children}
@@ -55,17 +55,17 @@ export class StateProvider extends React.Component {
     );
   }
 }
-export const StateProps = props => (
-  <Consumer>{context => <SubComponent {...props} {...context} />}</Consumer>
+export const StateProps = (props) => (
+  <Consumer>{(context) => <SubComponent {...props} {...context} />}</Consumer>
 );
 
 class SubComponent extends React.Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
     startFetching: PropTypes.func.isRequired,
-    stopFetching: PropTypes.func.isRequired
+    stopFetching: PropTypes.func.isRequired,
   };
-  networkRequest = async func => {
+  networkRequest = async (func) => {
     try {
       this.props.startFetching();
       await func();
@@ -76,28 +76,28 @@ class SubComponent extends React.Component {
   render() {
     return this.props.children({
       ...this.props,
-      networkRequest: this.networkRequest
+      networkRequest: this.networkRequest,
     });
   }
 }
-export const withStateProps = YourComponent => {
+export const withStateProps = (YourComponent) => {
   return class extends React.Component {
     render() {
       return (
         <Consumer>
-          {context => <YourComponent {...context} {...this.props} />}
+          {(context) => <YourComponent {...context} {...this.props} />}
         </Consumer>
       );
     }
   };
 };
 
-export const withApiCall = YourComponent => {
+export const withApiCall = (YourComponent) => {
   return class extends React.Component {
     state = {
-      isFetching: false
+      isFetching: false,
     };
-    apiCall = async yourApiCall => {
+    apiCall = async (yourApiCall) => {
       try {
         this.setState({ isFetching: true });
         const result = await yourApiCall();
@@ -121,12 +121,12 @@ export const withApiCall = YourComponent => {
 };
 export class WithApiCall extends React.Component {
   static propTypes = {
-    children: PropTypes.any.isRequired
+    children: PropTypes.any.isRequired,
   };
   state = {
-    isFetching: false
+    isFetching: false,
   };
-  apiCall = async yourApiCall => {
+  apiCall = async (yourApiCall) => {
     try {
       this.setState({ isFetching: true });
       const result = await yourApiCall();
@@ -149,7 +149,7 @@ export class WithApiCall extends React.Component {
     return this.props.children({
       ...this.props,
       isFetching: this.state.isFetching,
-      apiCall: this.apiCall
+      apiCall: this.apiCall,
     });
   }
 }

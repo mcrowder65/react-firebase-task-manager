@@ -2,10 +2,11 @@ import firebase from "@firebase/app";
 import "@firebase/auth";
 
 import { fetcher } from "../fetcher";
+import { getUser } from "../models/user-model";
 
 export const getUserFromFirebase = () => {
-  return new Promise(resolve => {
-    firebase.auth().onAuthStateChanged(user => resolve(user));
+  return new Promise((resolve) => {
+    firebase.auth().onAuthStateChanged((user) => resolve(user));
   });
 };
 
@@ -22,34 +23,38 @@ export const logout = () => {
 };
 
 const firebaseUrl = `https://task-manager-82de4.firebaseio.com`;
-export const addToTable = (tableName, bodyWithoutTimestamp, authToken) => {
-  const body = {
-    ...bodyWithoutTimestamp,
-    timestamp: new Date()
-  };
+
+async function withAuth(yourFunction) {
+  const currentUser = await getUser();
+  return () => yourFunction(currentUser.qa);
+}
+export const addToTable = withAuth((authToken) => (tableName, body) => {
   return fetcher(`${firebaseUrl}/${tableName}.json?auth=${authToken}`, {
     method: "POST",
-    body: JSON.stringify(body)
+    body: JSON.stringify({
+      ...body,
+      timestamp: new Date(),
+    }),
   });
-};
+});
 
 export const deleteRecord = (recordPath, authToken) => {
   return fetcher(`${firebaseUrl}/${recordPath}.json?auth=${authToken}`, {
-    method: "DELETE"
+    method: "DELETE",
   });
 };
 export const setTable = (tableName, bodyWithoutTimestamp, authToken) => {
   const body = {
     ...bodyWithoutTimestamp,
-    lastEdited: new Date()
+    lastEdited: new Date(),
   };
   return fetcher(`${firebaseUrl}/${tableName}.json?auth=${authToken}`, {
     method: "PUT",
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
 };
 export const getTable = (tableName, auth) => {
   return fetcher(`${firebaseUrl}/${tableName}.json?auth=${auth}`, {
-    method: "GET"
+    method: "GET",
   });
 };

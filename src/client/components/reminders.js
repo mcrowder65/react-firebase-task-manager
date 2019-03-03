@@ -21,7 +21,7 @@ class Reminders extends React.Component {
           _setIsEditing={this.setIsEditing}
           reminder={this.state.currentReminder}
         />
-        {reminders.map(([id, reminder], index) => {
+        {(reminders || []).map(([id, reminder], index) => {
           return (
             <Reminder
               id={id}
